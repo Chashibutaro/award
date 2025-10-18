@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>本日の表彰 - 結果発表</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- スクショ用ライブラリ -->
+    <script src="https://cdn.jsdelivr.net/npm/html-to-image@1.11.11/dist/html-to-image.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+        .animate-bounce {
+            animation: bounce 2s infinite;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-pink-200 via-purple-200 to-blue-200 min-h-screen p-8">
+
+<!-- 
+═══════════════════════════════════════════════════════════
+  ★★★ ここを編集してデータを更新してください ★★★
+═══════════════════════════════════════════════════════════
+-->
+<script>
+let AWARD_DATA = {
+    date: '10/15',  // ← 日付を変更
+    
+    // 午前の部のデータ
+    morning: {
+        processing: { name: 'ISR', value: '152件' },
+        orders: { name: 'ISR', value: '98件' },
+        sales: { name: 'ISR', value: '$2,450,000' }
+    },
+    
+    // 午後の部のデータ
+    afternoon: {
+        processing: { name: 'ISR', value: '203件' },
+        orders: { name: 'ISR', value: '145件' },
+        sales: { name: 'ISR', value: '$3,120,000' }
+    },
+    
+    // 本日の総合データ
+    fullday: {
+        processing: { name: 'ISR', value: '355件' },
+        orders: { name: 'ISR', value: '243件' },
+        sales: { name: 'ISR', value: '$5,570,000' }
+    }
+};
+</script>
+<!-- 
+═══════════════════════════════════════════════════════════
+  ★★★ ここまで ★★★
+═══════════════════════════════════════════════════════════
+-->
+
+<div class="max-w-4xl mx-auto">
+    <!-- ヘッダー -->
+    <div class="text-center mb-8">
+        <h1 class="text-4xl font-bold text-gray-800 mb-2" id="mainTitle"></h1>
+        <p class="text-gray-600">素晴らしい成績をおさめた皆さんを表彰します!</p>
+    </div>
+
+    <!-- 出力・共有（反映ページのみ） -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-6 shadow-lg">
+        <div class="flex items-center gap-2 mb-4">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M4 12h16"></path>
+                <path d="M4 6h16"></path>
+                <path d="M4 18h10"></path>
+            </svg>
+            <h2 class="text-xl font-bold text-gray-800">出力・共有</h2>
+        </div>
+        <div class="flex flex-wrap gap-2">
+            <button id="btn-export-csv" class="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold shadow hover:bg-green-700">CSV出力</button>
+            <button id="btn-export-json" class="px-4 py-2 rounded-lg bg-teal-600 text-white font-semibold shadow hover:bg-teal-700">JSON出力</button>
+            <button id="btn-print" class="px-4 py-2 rounded-lg bg-gray-700 text-white font-semibold shadow hover:bg-gray-800">印刷</button>
+            <button id="btn-share" class="px-4 py-2 rounded-lg bg-purple-600 text-white font-semibold shadow hover:bg-purple-700">共有</button>
+            <button id="btn-copy" class="px-4 py-2 rounded-lg bg-cyan-600 text-white font-semibold shadow hover:bg-cyan-700">コピー</button>
+        </div>
+    </div>
+
+    <!-- 部の選択 -->
+    <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-6 shadow-lg">
+        <div class="flex items-center gap-2 mb-4">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            <h2 class="text-xl font-bold text-gray-800">部を選択</h2>
+        </div>
+        <div class="grid grid-cols-3 gap-4">
+            <button onclick="showPeriod('morning')" id="btn-morning" 
+                class="py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-orange-400 to-yellow-400 text-white shadow-lg scale-105">
+                <div class="text-lg">🌅</div>
+                <div>午前の部</div>
+                <div class="text-sm opacity-80">12:00まで</div>
+            </button>
+            
+            <button onclick="showPeriod('afternoon')" id="btn-afternoon"
+                class="py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100 shadow">
+                <div class="text-lg">🌆</div>
+                <div>午後の部</div>
+                <div class="text-sm opacity-80">18:00まで</div>
+            </button>
+            
+            <button onclick="showPeriod('fullday')" id="btn-fullday"
+                class="py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100 shadow">
+                <div class="text-lg">🌟</div>
+                <div>本日の総合</div>
+                <div class="text-sm opacity-80">全体</div>
+            </button>
+        </div>
+    </div>
+
+    <!-- 結果表示エリア -->
+    <div id="copy-target" class="bg-gradient-to-br from-pink-300 to-purple-300 rounded-3xl p-8 shadow-2xl">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-bold text-white mb-2" id="periodTitle"></h2>
+            <div class="inline-block bg-white/30 backdrop-blur-sm rounded-full px-6 py-2">
+                <p class="text-white font-semibold" id="periodTime"></p>
+            </div>
+        </div>
+
+        <!-- イラストエリア -->
+        <div class="bg-gradient-to-b from-pink-400 to-pink-300 rounded-2xl mb-8 h-64 flex items-center justify-center overflow-hidden shadow-inner">
+            <div class="text-center">
+                <div class="text-yellow-300 mx-auto mb-4 animate-bounce text-8xl">🏆</div>
+                <p class="text-white text-2xl font-bold">おめでとうございます!</p>
+            </div>
+        </div>
+
+        <!-- 表彰カード -->
+        <div class="space-y-4">
+            <!-- 処理数 1位 -->
+            <div class="bg-yellow-100 border-4 border-yellow-400 rounded-2xl p-6 shadow-lg transform hover:scale-105 transition-transform">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-yellow-400 rounded-full p-3">
+                            <svg class="w-8 h-8 text-yellow-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+                                <polyline points="17 6 23 6 23 12"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-yellow-800">処理数 1 位</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1" id="processing-name"></p>
+                            <p class="text-xl text-gray-600 mt-1" id="processing-value"></p>
+                        </div>
+                    </div>
+                    <div class="text-yellow-500 text-6xl">🏆</div>
+                </div>
+            </div>
+
+            <!-- 受注数 1位 -->
+            <div class="bg-red-100 border-4 border-red-400 rounded-2xl p-6 shadow-lg transform hover:scale-105 transition-transform">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-red-400 rounded-full p-3">
+                            <svg class="w-8 h-8 text-red-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <circle cx="12" cy="8" r="7"></circle>
+                                <polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"></polyline>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-red-800">受注数 1 位</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1" id="orders-name"></p>
+                            <p class="text-xl text-gray-600 mt-1" id="orders-value"></p>
+                        </div>
+                    </div>
+                    <div class="text-red-500 text-6xl">🏆</div>
+                </div>
+            </div>
+
+            <!-- 売上 1位 -->
+            <div class="bg-pink-100 border-4 border-pink-400 rounded-2xl p-6 shadow-lg transform hover:scale-105 transition-transform">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <div class="bg-pink-400 rounded-full p-3">
+                            <svg class="w-8 h-8 text-pink-800" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                <path d="M4 22h16"></path>
+                                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path>
+                                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path>
+                                <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-pink-800">売上 1 位</h3>
+                            <p class="text-3xl font-bold text-gray-800 mt-1" id="sales-name"></p>
+                            <p class="text-xl text-gray-600 mt-1" id="sales-value"></p>
+                        </div>
+                    </div>
+                    <div class="text-pink-500 text-6xl">🏆</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- フッターメッセージ -->
+        <div class="mt-8 text-center">
+            <div class="inline-block bg-white/90 backdrop-blur-sm rounded-full px-8 py-3 shadow-lg">
+                <p class="text-gray-700 font-semibold">
+                    ✨ おめでとうございます。お菓子が贈呈されます。 ✨
+                </p>
+            </div>
+        </div>
+    </div>
+
+    
+</div>
+
+<script>
+let currentPeriod = 'morning';
+
+const periodInfo = {
+    morning: { title: '午前の部', time: '🎉 12:00までの表彰 🎉' },
+    afternoon: { title: '午後の部', time: '🎉 18:00までの表彰 🎉' },
+    fullday: { title: '本日の総合', time: '🎉 全体の表彰 🎉' }
+};
+
+function showPeriod(period) {
+    currentPeriod = period;
+    
+    // ボタンのスタイル更新
+    ['morning', 'afternoon', 'fullday'].forEach(p => {
+        const btn = document.getElementById(`btn-${p}`);
+        if (p === period) {
+            btn.className = 'py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-gradient-to-r from-purple-500 to-pink-500 text-white shadow-lg scale-105';
+        } else {
+            btn.className = 'py-4 px-6 rounded-xl font-semibold transition-all duration-300 bg-white text-gray-700 hover:bg-gray-100 shadow';
+        }
+    });
+    
+    // データ表示更新
+    const data = AWARD_DATA[period];
+    document.getElementById('periodTitle').textContent = periodInfo[period].title;
+    document.getElementById('periodTime').textContent = periodInfo[period].time;
+    
+    document.getElementById('processing-name').textContent = data.processing.name;
+    document.getElementById('processing-value').textContent = data.processing.value;
+    
+    document.getElementById('orders-name').textContent = data.orders.name;
+    document.getElementById('orders-value').textContent = data.orders.value;
+    
+    document.getElementById('sales-name').textContent = data.sales.name;
+    document.getElementById('sales-value').textContent = data.sales.value;
+}
+
+// 初期表示（ローカル保存から読み込み）
+function loadFromLocalStorage() {
+    try {
+        const stored = localStorage.getItem('AWARD_DATA');
+        if (stored) {
+            const parsed = JSON.parse(stored);
+            // 簡易チェック
+            if (parsed && parsed.date && parsed.morning && parsed.afternoon && parsed.fullday) {
+                AWARD_DATA = parsed;
+            }
+        }
+    } catch (e) {
+        console.warn('ローカルデータの読み込みに失敗しました', e);
+    }
+}
+
+// 公開用共有データ（award.json）から読み込み（成功時はこれを優先）
+async function loadFromAwardJSON() {
+    try {
+        const res = await fetch('award.json', { cache: 'no-store' });
+        if (res.ok) {
+            const data = await res.json();
+            if (data && data.date && data.morning && data.afternoon && data.fullday) {
+                AWARD_DATA = data;
+                return true;
+            }
+        }
+    } catch (e) {
+        console.warn('award.jsonの読み込みに失敗しました', e);
+    }
+    return false;
+}
+
+// 初期化：まずaward.jsonを試し、失敗時のみローカル保存を利用
+(async () => {
+    const loaded = await loadFromAwardJSON();
+    if (!loaded) {
+        loadFromLocalStorage();
+    }
+    document.getElementById('mainTitle').textContent = AWARD_DATA.date + ' 結果発表';
+    showPeriod('morning');
+    // コピーボタン連携
+    const btnCopy = document.getElementById('btn-copy');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', async () => {
+        const target = document.getElementById('copy-target');
+        const label = `${AWARD_DATA.date}_${periodInfo[currentPeriod].title}`;
+        await captureElementToClipboard(target, label);
+      });
+    }
+})();
+
+// ===== 出力機能 =====
+function download(filename, content, mime = 'text/plain') {
+    const a = document.createElement('a');
+    a.href = `data:${mime};charset=utf-8,` + encodeURIComponent(content);
+    a.download = filename;
+    a.click();
+}
+
+function exportCSV() {
+    const periodLabel = { morning: '午前の部', afternoon: '午後の部', fullday: '本日の総合' };
+    const categories = [ ['processing', '処理数'], ['orders', '受注数'], ['sales', '売上'] ];
+    const periods = ['morning', 'afternoon', 'fullday'];
+    let csv = '日付,部,項目,店舗名,値\n';
+    periods.forEach(p => {
+        categories.forEach(([key, label]) => {
+            const item = AWARD_DATA[p][key];
+            csv += `${AWARD_DATA.date},${periodLabel[p]},${label},${item.name},${item.value}\n`;
+        });
+    });
+    download(`表彰_${AWARD_DATA.date}.csv`, csv, 'text/csv');
+}
+
+function exportJSON() {
+    const json = JSON.stringify(AWARD_DATA, null, 2);
+    download(`表彰_${AWARD_DATA.date}.json`, json, 'application/json');
+}
+
+function exportStandalone() {
+    const data = AWARD_DATA;
+    const html = `<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${data.date} 結果発表 - スタンドアローン</title>
+  <style>
+    :root { --bg1:#fbcfe8; --bg2:#e9d5ff; --bg3:#bfdbfe; }
+    * { box-sizing: border-box; }
+    body { margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans"; }
+    .body-grad { background: linear-gradient(135deg, var(--bg1), var(--bg2) 50%, var(--bg3)); min-height: 100vh; padding: 2rem; }
+    .container { max-width: 1024px; margin: 0 auto; }
+    .title { font-size: 2.25rem; font-weight: 700; color: #1f2937; text-align: center; margin-bottom: .25rem; }
+    .subtitle { text-align: center; color: #4b5563; }
+    .card { background: rgba(255,255,255,0.8); backdrop-filter: blur(6px); border-radius: 1rem; padding: 1.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); margin-bottom: 1rem; }
+    .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+    .btn { border: none; border-radius: 0.75rem; padding: 1rem 1.25rem; font-weight: 600; box-shadow: 0 6px 12px rgba(0,0,0,0.1); cursor: pointer; }
+    .btn-active { background: linear-gradient(90deg, #8b5cf6, #ec4899); color: #fff; transform: scale(1.05); }
+    .btn-inactive { background: #fff; color: #374151; }
+    .btn-inactive:hover { background: #f3f4f6; }
+    .result { background: linear-gradient(135deg, #f9a8d4, #d8b4fe); border-radius: 1.5rem; padding: 2rem; box-shadow: 0 14px 30px rgba(0,0,0,0.2); }
+    .result-title { text-align:center; font-size: 1.75rem; font-weight: 700; color: #fff; margin-bottom: .5rem; }
+    .result-time { display:inline-block; background: rgba(255,255,255,0.3); backdrop-filter: blur(6px); border-radius: 9999px; padding: .5rem 1rem; font-weight: 600; color: #fff; }
+    .illustration { background: linear-gradient(180deg, #f472b6, #f9a8d4); border-radius: 1rem; height: 16rem; display:flex; align-items:center; justify-content:center; overflow:hidden; box-shadow: inset 0 6px 12px rgba(0,0,0,0.15); margin-bottom: 2rem; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0);} 50% { transform: translateY(-20px);} }
+    .trophy { color: #fde68a; font-size: 6rem; animation: bounce 2s infinite; }
+    .award-list { display: grid; gap: 1rem; }
+    .award-card { border-radius: 1rem; padding: 1.25rem; box-shadow: 0 10px 20px rgba(0,0,0,0.15); display:flex; align-items:center; justify-content:space-between; }
+    .award-yellow { background: #fef3c7; border: 4px solid #facc15; }
+    .award-red { background: #fee2e2; border: 4px solid #f87171; }
+    .award-pink { background: #fce7f3; border: 4px solid #f472b6; }
+    .award-title-yellow { color: #92400e; font-size: 1.5rem; font-weight: 700; }
+    .award-title-red { color: #7f1d1d; font-size: 1.5rem; font-weight: 700; }
+    .award-title-pink { color: #9d174d; font-size: 1.5rem; font-weight: 700; }
+    .name { font-size: 1.75rem; font-weight: 700; color: #111827; margin-top: .25rem; }
+    .value { font-size: 1.125rem; color: #4b5563; margin-top: .25rem; }
+    .big-trophy { font-size: 4rem; }
+    .footer-bubble { display:inline-block; background: rgba(255,255,255,0.9); backdrop-filter: blur(6px); border-radius: 9999px; padding: .75rem 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    .footer { margin-top: 2rem; text-align:center; }
+  </style>
+</head>
+<body class="body-grad">
+  <div class="container">
+    <div class="title">${data.date} 結果発表</div>
+    <div class="subtitle">素晴らしい成績をおさめた皆さんを表彰します!</div>
+
+    <div class="card">
+      <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:.75rem;">
+        <div style="width:24px; height:24px; color:#7c3aed;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <div style="font-size:1.25rem; font-weight:700; color:#1f2937;">部を選択</div>
+      </div>
+      <div class="grid3">
+        <button id="btn-morning" class="btn btn-active" onclick="showPeriod('morning')">
+          <div style="font-size:1.25rem;">🌅</div>
+          <div>午前の部</div>
+          <div style="opacity:.8; font-size:.875rem;">12:00まで</div>
+        </button>
+        <button id="btn-afternoon" class="btn btn-inactive" onclick="showPeriod('afternoon')">
+          <div style="font-size:1.25rem;">🌆</div>
+          <div>午後の部</div>
+          <div style="opacity:.8; font-size:.875rem;">18:00まで</div>
+        </button>
+        <button id="btn-fullday" class="btn btn-inactive" onclick="showPeriod('fullday')">
+          <div style="font-size:1.25rem;">🌟</div>
+          <div>本日の総合</div>
+          <div style="opacity:.8; font-size:.875rem;">全体</div>
+        </button>
+      </div>
+    </div>
+
+    <div class="result">
+      <div class="result-title" id="periodTitle"></div>
+      <div style="text-align:center; margin-bottom:1rem;"><span class="result-time" id="periodTime"></span></div>
+      <div class="illustration">
+        <div style="text-align:center;">
+          <div class="trophy">🏆</div>
+          <div style="color:#fff; font-size:1.5rem; font-weight:700;">おめでとうございます!</div>
+        </div>
+      </div>
+      <div class="award-list">
+        <div class="award-card award-yellow">
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="background:#facc15; border-radius:9999px; padding:.75rem; color:#78350f;">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+            </div>
+            <div>
+              <div class="award-title-yellow">処理数 1 位</div>
+              <div class="name" id="processing-name"></div>
+              <div class="value" id="processing-value"></div>
+            </div>
+          </div>
+          <div class="big-trophy" style="color:#f59e0b;">🏆</div>
+        </div>
+
+        <div class="award-card award-red">
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="background:#f87171; border-radius:9999px; padding:.75rem; color:#7f1d1d;">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
+            </div>
+            <div>
+              <div class="award-title-red">受注数 1 位</div>
+              <div class="name" id="orders-name"></div>
+              <div class="value" id="orders-value"></div>
+            </div>
+          </div>
+          <div class="big-trophy" style="color:#ef4444;">🏆</div>
+        </div>
+
+        <div class="award-card award-pink">
+          <div style="display:flex; align-items:center; gap:1rem;">
+            <div style="background:#f472b6; border-radius:9999px; padding:.75rem; color:#9d174d;">
+              <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
+            </div>
+            <div>
+              <div class="award-title-pink">売上 1 位</div>
+              <div class="name" id="sales-name"></div>
+              <div class="value" id="sales-value"></div>
+            </div>
+          </div>
+          <div class="big-trophy" style="color:#ec4899;">🏆</div>
+        </div>
+      </div>
+
+      <div class="footer"><div class="footer-bubble">✨ 皆さんの頑張りが素晴らしい結果につながりました! ✨</div></div>
+    </div>
+  </div>
+
+  <" + "script>
+    let currentPeriod = 'morning';
+    const AWARD_DATA = ${JSON.stringify(data)};
+    const periodInfo = {
+      morning: { title: '午前の部', time: '🎉 12:00までの表彰 🎉' },
+      afternoon: { title: '午後の部', time: '🎉 18:00までの表彰 🎉' },
+      fullday: { title: '本日の総合', time: '🎉 全体の表彰 🎉' }
+    };
+
+    function showPeriod(period) {
+      currentPeriod = period;
+      ['morning','afternoon','fullday'].forEach(p => {
+        const btn = document.getElementById('btn-' + p);
+        if (!btn) return;
+        btn.className = 'btn ' + (p === period ? 'btn-active' : 'btn-inactive');
+      });
+      const data = AWARD_DATA[period];
+      document.getElementById('periodTitle').textContent = periodInfo[period].title;
+      document.getElementById('periodTime').textContent = periodInfo[period].time;
+      document.getElementById('processing-name').textContent = data.processing.name;
+      document.getElementById('processing-value').textContent = data.processing.value;
+      document.getElementById('orders-name').textContent = data.orders.name;
+      document.getElementById('orders-value').textContent = data.orders.value;
+      document.getElementById('sales-name').textContent = data.sales.name;
+      document.getElementById('sales-value').textContent = data.sales.value;
+    }
+
+    // 初期表示
+    showPeriod('morning');
+  </" + "script>
+</body>
+</html>`;
+
+    download(`表彰_スタンドアローン_${data.date}.html`, html, 'text/html');
+}
+
+// ===== スクショ（見た目に忠実） =====
+async function captureElementToClipboard(el, filename){
+  // まずは html-to-image で忠実な描画を試す
+  try {
+    const dataUrl = await window.htmlToImage.toPng(el, {
+      cacheBust: true,
+      pixelRatio: window.devicePixelRatio || 1,
+      backgroundColor: null,
+      skipFonts: false
+    });
+    const blob = await (await fetch(dataUrl)).blob();
+    await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
+    alert(`${filename} をクリップボードにコピーしました。`);
+    return;
+  } catch (e) {
+    console.warn('html-to-image に失敗。html2canvasへフォールバックします。', e);
+  }
+
+  // フォールバック: html2canvas（foreignObjectRendering 有効）
+  try {
+    const canvas = await html2canvas(el, { scale: window.devicePixelRatio, useCORS: true, logging:false, foreignObjectRendering: true });
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    await navigator.clipboard.write([ new ClipboardItem({ 'image/png': blob }) ]);
+    alert(`${filename} をクリップボードにコピーしました。`);
+  } catch(err) {
+    console.error(err);
+    const canvas = await html2canvas(el, { scale: window.devicePixelRatio, useCORS: true, logging:false });
+    const blob = await new Promise(res => canvas.toBlob(res, 'image/png'));
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a'); a.href = url; a.download = `${filename}.png`; a.click(); URL.revokeObjectURL(url);
+    alert('クリップボードへのコピーに失敗したため、画像をダウンロードしました。');
+  }
+}
+
+function sharePage() {
+    const shareData = {
+        title: `${AWARD_DATA.date} 結果発表`,
+        text: `${AWARD_DATA.date} の表彰結果をご覧ください`,
+        url: location.href
+    };
+    if (navigator.share) {
+        navigator.share(shareData).catch(() => {});
+    } else {
+        // Web Share 非対応のためURLコピー
+        navigator.clipboard?.writeText(location.href).then(() => {
+            alert('ページURLをクリップボードにコピーしました。');
+        }).catch(() => {
+            alert('共有機能が利用できません。URLを手動で共有してください。');
+        });
+    }
+}
+
+// イベント登録（反映ページ）
+document.getElementById('btn-export-csv').addEventListener('click', exportCSV);
+document.getElementById('btn-export-json').addEventListener('click', exportJSON);
+document.getElementById('btn-print').addEventListener('click', () => window.print());
+document.getElementById('btn-share').addEventListener('click', sharePage);
+</script>
+
+</body>
+</html>

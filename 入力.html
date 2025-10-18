@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>表彰データ 入力ページ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gradient-to-br from-blue-100 via-teal-100 to-green-100 min-h-screen p-8">
+    <div class="max-w-5xl mx-auto">
+        <div class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">表彰データ 入力</h1>
+            <p class="text-gray-600">各項目を入力して保存すると、反映ページで表示されます。</p>
+        </div>
+
+        <!-- 日付と操作ボタン -->
+        <div class="bg-white/80 backdrop-blur-sm rounded-2xl p-6 mb-6 shadow-lg">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">日付</label>
+                    <input id="input-date" type="text" placeholder="例: 10/15" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                </div>
+                <div class="flex items-end gap-2">
+                    <button id="btn-save" class="px-4 py-2 rounded-lg bg-blue-600 text-white font-semibold shadow hover:bg-blue-700">保存</button>
+                    <a href="./表彰用.html" class="px-4 py-2 rounded-lg bg-purple-600 text-white font-semibold shadow hover:bg-purple-700">反映ページを開く</a>
+                    <button id="btn-copy-json" class="px-4 py-2 rounded-lg bg-green-600 text-white font-semibold shadow hover:bg-green-700">公開用JSONをコピー</button>
+                </div>
+                <div class="mt-2">
+                    <details class="rounded-lg bg-white/60 p-3">
+                        <summary class="cursor-pointer font-semibold text-gray-700">GitHubへ保存（PAT利用）</summary>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+                            <input id="gh-owner" type="text" placeholder="GitHubユーザー名" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="gh-repo" type="text" placeholder="リポジトリ名" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="gh-branch" type="text" placeholder="ブランチ（例: main）" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="gh-token" type="password" placeholder="PAT (repo権限)" class="w-full rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div class="mt-3">
+                            <button id="btn-save-github" class="px-4 py-2 rounded-lg bg-teal-600 text-white font-semibold shadow hover:bg-teal-700">GitHubへ保存</button>
+                            <p class="text-xs text-gray-600 mt-2">※ トークンはブラウザのみで使用し、保存しません。セキュリティのため使い終わったらページを閉じてください。</p>
+                        </div>
+                    </details>
+                </div>
+            </div>
+
+            <!-- 3カラム入力 -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- 午前の部 -->
+                <div class="rounded-xl border border-gray-200 p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-bold text-gray-800">午前の部 入力</h3>
+                        <button id="btn-clear-morning" class="px-3 py-1 text-sm rounded-md bg-gray-200 hover:bg-gray-300 text-gray-800">クリア</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">処理数 1位</p>
+                            <input id="input-morning-processing-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-morning-processing-value" type="text" placeholder="件数 例: 12" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">受注数 1位</p>
+                            <input id="input-morning-orders-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-morning-orders-value" type="text" placeholder="件数 例: 5件" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">売上 1位</p>
+                            <input id="input-morning-sales-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-morning-sales-value" type="text" placeholder="金額 例: $999" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 午後の部 -->
+                <div class="rounded-xl border border-gray-200 p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-bold text-gray-800">午後の部 入力</h3>
+                        <button id="btn-clear-afternoon" class="px-3 py-1 text-sm rounded-md bg-gray-200 hover:bg-gray-300 text-gray-800">クリア</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">処理数 1位</p>
+                            <input id="input-afternoon-processing-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-afternoon-processing-value" type="text" placeholder="件数 例: 20件" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">受注数 1位</p>
+                            <input id="input-afternoon-orders-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-afternoon-orders-value" type="text" placeholder="件数 例: 14件" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">売上 1位</p>
+                            <input id="input-afternoon-sales-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-afternoon-sales-value" type="text" placeholder="金額 例: $3,120,000" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 本日の総合 -->
+                <div class="rounded-xl border border-gray-200 p-4">
+                    <div class="flex items-center justify-between mb-3">
+                        <h3 class="text-lg font-bold text-gray-800">本日の総合 入力</h3>
+                        <button id="btn-clear-fullday" class="px-3 py-1 text-sm rounded-md bg-gray-200 hover:bg-gray-300 text-gray-800">クリア</button>
+                    </div>
+                    <div class="space-y-3">
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">処理数 1位</p>
+                            <input id="input-fullday-processing-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-fullday-processing-value" type="text" placeholder="件数 例: 35件" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">受注数 1位</p>
+                            <input id="input-fullday-orders-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-fullday-orders-value" type="text" placeholder="件数 例: 24件" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                        <div>
+                            <p class="text-sm font-semibold text-gray-700">売上 1位</p>
+                            <input id="input-fullday-sales-name" type="text" placeholder="ISR名" class="w-full mt-1 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                            <input id="input-fullday-sales-value" type="text" placeholder="金額 例: $500" class="w-full mt-2 rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-400 focus:border-blue-400" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="text-sm text-gray-600">保存後は「反映ページを開く」をクリックして確認してください。</div>
+    </div>
+
+    <script>
+    let AWARD_DATA = {
+        date: '10/15',
+        morning: {
+            processing: { name: '田中商店', value: '152件' },
+            orders: { name: '鈴木工業', value: '98件' },
+            sales: { name: '佐藤物産', value: '¥2,450,000' }
+        },
+        afternoon: {
+            processing: { name: '山田商事', value: '203件' },
+            orders: { name: '田中商店', value: '145件' },
+            sales: { name: '鈴木工業', value: '¥3,120,000' }
+        },
+        fullday: {
+            processing: { name: '田中商店', value: '355件' },
+            orders: { name: '鈴木工業', value: '243件' },
+            sales: { name: '佐藤物産', value: '¥5,570,000' }
+        }
+    };
+
+    function populateFormFromData() {
+        document.getElementById('input-date').value = AWARD_DATA.date || '';
+        const periods = ['morning', 'afternoon', 'fullday'];
+        const fields = ['processing', 'orders', 'sales'];
+        periods.forEach(p => {
+            fields.forEach(f => {
+                const item = AWARD_DATA[p][f];
+                document.getElementById(`input-${p}-${f}-name`).value = item.name || '';
+                document.getElementById(`input-${p}-${f}-value`).value = item.value || '';
+            });
+        });
+    }
+
+    function loadFromLocalStorage() {
+        try {
+            const stored = localStorage.getItem('AWARD_DATA');
+            if (stored) {
+                const parsed = JSON.parse(stored);
+                if (parsed && parsed.date && parsed.morning && parsed.afternoon && parsed.fullday) {
+                    AWARD_DATA = parsed;
+                }
+            }
+        } catch (e) {
+            console.warn('復元に失敗しました', e);
+        }
+    }
+
+    function readForm() {
+        const get = (p, f) => ({
+            name: document.getElementById(`input-${p}-${f}-name`).value.trim(),
+            value: document.getElementById(`input-${p}-${f}-value`).value.trim()
+        });
+        return {
+            date: document.getElementById('input-date').value.trim(),
+            morning: {
+                processing: get('morning', 'processing'),
+                orders: get('morning', 'orders'),
+                sales: get('morning', 'sales')
+            },
+            afternoon: {
+                processing: get('afternoon', 'processing'),
+                orders: get('afternoon', 'orders'),
+                sales: get('afternoon', 'sales')
+            },
+            fullday: {
+                processing: get('fullday', 'processing'),
+                orders: get('fullday', 'orders'),
+                sales: get('fullday', 'sales')
+            }
+        };
+    }
+
+    function saveToLocalStorage() {
+        const newData = readForm();
+        if (!newData.date) {
+            alert('日付を入力してください。');
+            return;
+        }
+        localStorage.setItem('AWARD_DATA', JSON.stringify(newData));
+        alert('保存しました。反映ページで表示されます。');
+    }
+
+    // 公開用JSONのコピー（GitHub上のaward.jsonに貼り付けて保存）
+    async function copyJSONToClipboard() {
+        const data = readForm();
+        if (!data.date) {
+            alert('日付を入力してください。');
+            return;
+        }
+        try {
+            await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
+            alert('award.json用の内容をクリップボードへコピーしました。GitHubでaward.jsonを編集して貼り付けて保存してください。');
+        } catch (e) {
+            alert('クリップボードへのコピーに失敗しました。手動でJSONを取得して保存してください。');
+        }
+    }
+
+    // GitHub APIでaward.jsonを更新（PAT必要）
+    async function saveToGitHub() {
+        const owner = document.getElementById('gh-owner').value.trim();
+        const repo = document.getElementById('gh-repo').value.trim();
+        const branch = (document.getElementById('gh-branch').value.trim() || 'main');
+        const token = document.getElementById('gh-token').value.trim();
+        const data = readForm();
+        if (!owner || !repo || !token) {
+            alert('GitHubのユーザー名・リポジトリ名・PATを入力してください。');
+            return;
+        }
+        if (!data.date) {
+            alert('日付を入力してください。');
+            return;
+        }
+        const headers = {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `token ${token}`
+        };
+        let sha = undefined;
+        try {
+            const getRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/award.json?ref=${encodeURIComponent(branch)}`, { headers });
+            if (getRes.ok) {
+                const getJson = await getRes.json();
+                sha = getJson.sha;
+            }
+        } catch (_) {}
+        const content = btoa(unescape(encodeURIComponent(JSON.stringify(data, null, 2))));
+        const body = {
+            message: `Update award.json (${data.date})`,
+            content,
+            branch,
+            sha
+        };
+        const putRes = await fetch(`https://api.github.com/repos/${owner}/${repo}/contents/award.json`, {
+            method: 'PUT',
+            headers: { ...headers, 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        if (putRes.ok) {
+            alert('GitHubへ保存しました。数十秒後にGitHub Pagesへ反映されます。');
+        } else {
+            const err = await putRes.json().catch(() => ({}));
+            alert('GitHubへの保存に失敗しました。設定や権限を確認してください。\n' + (err.message || ''));
+        }
+    }
+
+    function clearSection(section) {
+        const fields = ['processing', 'orders', 'sales'];
+        fields.forEach(f => {
+            const nameEl = document.getElementById(`input-${section}-${f}-name`);
+            const valueEl = document.getElementById(`input-${section}-${f}-value`);
+            if (nameEl) nameEl.value = '';
+            if (valueEl) valueEl.value = '';
+        });
+    }
+
+    document.getElementById('btn-save').addEventListener('click', saveToLocalStorage);
+    document.getElementById('btn-copy-json').addEventListener('click', copyJSONToClipboard);
+    document.getElementById('btn-save-github').addEventListener('click', saveToGitHub);
+    document.getElementById('btn-clear-morning').addEventListener('click', () => clearSection('morning'));
+    document.getElementById('btn-clear-afternoon').addEventListener('click', () => clearSection('afternoon'));
+    document.getElementById('btn-clear-fullday').addEventListener('click', () => clearSection('fullday'));
+
+    // 起動時にlocalStorageから自動復元してフォームへ反映
+    loadFromLocalStorage();
+    populateFormFromData();
+    </script>
+</body>
+</html>
