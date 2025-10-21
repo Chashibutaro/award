@@ -22,7 +22,7 @@
 
 <!-- 
 ═══════════════════════════════════════════════════════════
-  ★★★ ここを編集してデータを更新してください ★★★
+  ★★★ award.jsonから自動反映されます（入力ページで更新）★★★
 ═══════════════════════════════════════════════════════════
 -->
 <script>
@@ -61,7 +61,7 @@ let AWARD_DATA = {
     <!-- ヘッダー -->
     <div class="text-center mb-8">
         <h1 class="text-4xl font-bold text-gray-800 mb-2" id="mainTitle"></h1>
-        <p class="text-gray-600">素晴らしい成績をおさめた皆さんを表彰します!</p>
+        <p class="text-gray-600">本日の成績上位者を表彰します</p>
     </div>
 
     <!-- 出力・共有（反映ページのみ） -->
@@ -146,7 +146,7 @@ let AWARD_DATA = {
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-yellow-800">処理数 1 位</h3>
+                            <h3 class="text-2xl font-bold text-yellow-800">処理数 1位</h3>
                             <p class="text-3xl font-bold text-gray-800 mt-1" id="processing-name"></p>
                             <p class="text-xl text-gray-600 mt-1" id="processing-value"></p>
                         </div>
@@ -166,7 +166,7 @@ let AWARD_DATA = {
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-red-800">受注数 1 位</h3>
+                            <h3 class="text-2xl font-bold text-red-800">受注数 1位</h3>
                             <p class="text-3xl font-bold text-gray-800 mt-1" id="orders-name"></p>
                             <p class="text-xl text-gray-600 mt-1" id="orders-value"></p>
                         </div>
@@ -190,7 +190,7 @@ let AWARD_DATA = {
                             </svg>
                         </div>
                         <div>
-                            <h3 class="text-2xl font-bold text-pink-800">売上 1 位</h3>
+                            <h3 class="text-2xl font-bold text-pink-800">売上 1位</h3>
                             <p class="text-3xl font-bold text-gray-800 mt-1" id="sales-name"></p>
                             <p class="text-xl text-gray-600 mt-1" id="sales-value"></p>
                         </div>
@@ -375,7 +375,7 @@ function exportStandalone() {
 <body class="body-grad">
   <div class="container">
     <div class="title">${data.date} 結果発表</div>
-    <div class="subtitle">素晴らしい成績をおさめた皆さんを表彰します!</div>
+    <div class="subtitle">本日の成績上位者を表彰します</div>
 
     <div class="card">
       <div style="display:flex; align-items:center; gap:.5rem; margin-bottom:.75rem;">
@@ -419,7 +419,7 @@ function exportStandalone() {
               <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
             </div>
             <div>
-              <div class="award-title-yellow">処理数 1 位</div>
+              <div class="award-title-yellow">処理数 1位</div>
               <div class="name" id="processing-name"></div>
               <div class="value" id="processing-value"></div>
             </div>
@@ -433,7 +433,7 @@ function exportStandalone() {
               <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor"><circle cx="12" cy="8" r="7"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88"/></svg>
             </div>
             <div>
-              <div class="award-title-red">受注数 1 位</div>
+              <div class="award-title-red">受注数 1位</div>
               <div class="name" id="orders-name"></div>
               <div class="value" id="orders-value"></div>
             </div>
@@ -447,7 +447,7 @@ function exportStandalone() {
               <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/></svg>
             </div>
             <div>
-              <div class="award-title-pink">売上 1 位</div>
+              <div class="award-title-pink">売上 1位</div>
               <div class="name" id="sales-name"></div>
               <div class="value" id="sales-value"></div>
             </div>
