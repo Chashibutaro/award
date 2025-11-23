@@ -2,7 +2,7 @@
   "config": {
     "labels": {
       "processing": "処理数 1位",
-      "orders": "受注数 1位",
+      "orders": "GM数 1位",
       "sales": "売上 1位"
     },
     "theme": "default"
