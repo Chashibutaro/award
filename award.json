@@ -1,18 +1,29 @@
 {
-  "date": "10/15",
+  "date": "11/23",
+  "current": {
+    "processing": {
+      "name": "砂糖",
+      "value": "14"
+    },
+    "orders": {
+      "name": "-",
+      "value": "-"
+    },
+    "sales": {
+      "value": "-",
+      "name": "-"
+    }
+  },
+  "today_summary": {
+    "processing": {
+      "name": "-"
+    }
+  },
   "morning": {
-    "processing": { "name": "田中商店", "value": "152件" },
-    "orders": { "name": "鈴木工業", "value": "98件" },
-    "sales": { "name": "佐藤物産", "value": "¥2,450,000" }
+    "processing": {
+      "name": "-"
+    }
   },
-  "afternoon": {
-    "processing": { "name": "山田商事", "value": "203件" },
-    "orders": { "name": "田中商店", "value": "145件" },
-    "sales": { "name": "鈴木工業", "value": "¥3,120,000" }
-  },
-  "fullday": {
-    "processing": { "name": "田中商店", "value": "355件" },
-    "orders": { "name": "鈴木工業", "value": "243件" },
-    "sales": { "name": "佐藤物産", "value": "¥5,570,000" }
-  }
+  "afternoon": {},
+  "fullday": {}
 }
