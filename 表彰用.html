@@ -4,201 +4,478 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>表彰ボード</title>
+  <title>DAILY AWARD</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700;900&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;500;700;900&family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap');
 
     body {
-      font-family: 'Noto Sans JP', sans-serif;
+      font-family: 'Zen Kaku Gothic New', sans-serif;
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.85);
-      backdrop-filter: blur(12px);
-      border: 1px solid rgba(255, 255, 255, 0.5);
+    .font-eng {
+      font-family: 'Outfit', sans-serif;
     }
 
-    .card-gradient {
-      background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+    /* Animations */
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    .gold-text {
-      background: linear-gradient(45deg, #B8860B, #FFD700, #B8860B);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
     }
 
-    .section-title {
-      position: relative;
-      display: inline-block;
+    .animate-slide-up {
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
     }
 
-    .section-title::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 100%;
-      height: 4px;
-      background: linear-gradient(90deg, #3b82f6, #10b981);
-      border-radius: 2px;
+    .animate-fade-in {
+      animation: fadeIn 1s ease-out forwards;
+    }
+
+    .delay-100 {
+      animation-delay: 100ms;
+    }
+
+    .delay-200 {
+      animation-delay: 200ms;
+    }
+
+    .delay-300 {
+      animation-delay: 300ms;
+    }
+
+    /* Themes */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #f6d365 0%, #fda085 100%);
+      --card-bg: rgba(255, 255, 255, 0.9);
+      --text-color: #1f2937;
+      --accent-color: #f97316;
+      --tab-active-bg: #fff;
+      --tab-inactive-bg: rgba(255, 255, 255, 0.3);
+    }
+
+    [data-theme="blue"] {
+      --bg-gradient: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%);
+      --accent-color: #0ea5e9;
+    }
+
+    [data-theme="dark"] {
+      --bg-gradient: linear-gradient(135deg, #232526 0%, #414345 100%);
+      --card-bg: rgba(30, 41, 59, 0.9);
+      --text-color: #f3f4f6;
+      --accent-color: #818cf8;
+      --tab-active-bg: #1e293b;
+      --tab-inactive-bg: rgba(0, 0, 0, 0.3);
+    }
+
+    body {
+      background: var(--bg-gradient);
+      color: var(--text-color);
+      transition: background 0.5s;
+    }
+
+    .glass-card {
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+
+    .tab-btn {
+      transition: all 0.3s;
+    }
+
+    .tab-btn.active {
+      background: var(--tab-active-bg);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+      transform: scale(1.05);
+      font-weight: 900;
+      color: var(--accent-color);
+    }
+
+    .tab-btn:not(.active) {
+      background: var(--tab-inactive-bg);
+      opacity: 0.7;
+    }
+
+    .tab-btn:not(.active):hover {
+      opacity: 1;
+      transform: translateY(-2px);
     }
   </style>
 </head>
 
-<body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen p-4 md:p-8 text-slate-800">
+<body class="min-h-screen p-4 md:p-8 flex flex-col items-center justify-center overflow-x-hidden">
 
-  <div class="max-w-7xl mx-auto">
+  <!-- Theme Switcher -->
+  <div class="fixed top-4 right-4 z-50 flex gap-2">
+    <button onclick="setTheme('default')"
+      class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-300 to-orange-400 shadow-lg ring-2 ring-white/50 hover:scale-110 transition"></button>
+    <button onclick="setTheme('blue')"
+      class="w-8 h-8 rounded-full bg-gradient-to-br from-green-300 to-blue-400 shadow-lg ring-2 ring-white/50 hover:scale-110 transition"></button>
+    <button onclick="setTheme('dark')"
+      class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 shadow-lg ring-2 ring-white/50 hover:scale-110 transition"></button>
+  </div>
+
+  <div class="max-w-4xl w-full space-y-8">
+
     <!-- Header -->
-    <header class="flex justify-between items-end mb-8 pb-4 border-b border-slate-300">
-      <div>
-        <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-900 mb-2">
-          DAILY AWARD
-        </h1>
-        <p class="text-slate-600 text-lg font-medium">
-          <span id="display-date" class="text-2xl font-bold text-blue-600 mr-2">--/--</span>
-          の表彰
-        </p>
-      </div>
-      <div class="text-right hidden md:block">
-        <div class="text-sm text-slate-500">Last Updated</div>
-        <div id="last-updated" class="font-mono text-slate-700">--:--</div>
-      </div>
+    <header class="text-center animate-slide-up">
+      <h1 class="font-eng text-5xl md:text-7xl font-black tracking-tighter mb-2 drop-shadow-sm">
+        DAILY AWARD
+      </h1>
+      <p class="text-xl md:text-2xl font-bold opacity-90">
+        <span id="display-date" class="border-b-4 border-[var(--accent-color)] px-2">--/--</span>
+        の表彰
+      </p>
     </header>
 
-    <!-- Main Grid -->
-    <div class="grid grid-cols-1 xl:grid-cols-5 gap-6">
+    <!-- Tabs -->
+    <div class="flex justify-center gap-4 animate-slide-up delay-100">
+      <button onclick="switchTab('morning')" id="tab-morning"
+        class="tab-btn active px-8 py-3 rounded-full text-lg font-bold flex items-center gap-2">
+        <span>☀️</span> 午前の部
+      </button>
+      <button onclick="switchTab('afternoon')" id="tab-afternoon"
+        class="tab-btn px-8 py-3 rounded-full text-lg font-bold flex items-center gap-2">
+        <span>🌙</span> 午後の部
+      </button>
+    </div>
 
-      <!-- 1. 今の現状 -->
-      <div class="xl:col-span-1 space-y-6">
-        <div class="glass rounded-2xl p-6 shadow-lg border-t-4 border-blue-500 h-full">
-          <h2 class="text-xl font-bold text-slate-800 mb-6 section-title">今の現状</h2>
-          <div id="container-current" class="space-y-6">
-            <!-- Content -->
+    <!-- Main Content Area -->
+    <div class="relative min-h-[400px]">
+
+      <!-- Morning Section -->
+      <div id="section-morning"
+        class="glass-card rounded-3xl p-6 md:p-10 animate-slide-up delay-200 absolute w-full transition-all duration-500">
+        <div class="flex items-center gap-3 mb-8 border-b border-gray-200/30 pb-4">
+          <div class="p-3 rounded-2xl bg-orange-100 text-orange-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+              </path>
+            </svg>
           </div>
+          <div>
+            <h2 class="text-3xl font-bold">午前の部</h2>
+            <p class="text-sm opacity-70">Morning Session</p>
+          </div>
+        </div>
+        <div id="container-morning" class="space-y-4">
+          <!-- Content -->
         </div>
       </div>
 
-      <!-- 2. 今日の現状 -->
-      <div class="xl:col-span-1 space-y-6">
-        <div class="glass rounded-2xl p-6 shadow-lg border-t-4 border-teal-500 h-full">
-          <h2 class="text-xl font-bold text-slate-800 mb-6 section-title">今日の現状</h2>
-          <div id="container-today_summary" class="space-y-6">
-            <!-- Content -->
+      <!-- Afternoon Section -->
+      <div id="section-afternoon"
+        class="glass-card rounded-3xl p-6 md:p-10 absolute w-full transition-all duration-500 opacity-0 translate-x-10 pointer-events-none">
+        <div class="flex items-center gap-3 mb-8 border-b border-gray-200/30 pb-4">
+          <div class="p-3 rounded-2xl bg-indigo-100 text-indigo-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+              </path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold">午後の部</h2>
+            <p class="text-sm opacity-70">Afternoon Session</p>
           </div>
         </div>
+        <div id="container-afternoon" class="space-y-4">
+          <!-- Content -->
+        </div>
       </div>
+    </div>
 
-      <!-- 3. 午前・午後・全体 (メインエリア) -->
-      <div class="xl:col-span-3 grid grid-cols-1 md:grid-cols-3 gap-6">
+    <footer class="text-center text-sm opacity-60 animate-fade-in delay-300 pt-8">
+      Last Updated: <span id="last-updated" class="font-mono">--:--</span>
+    </footer>
 
-        <!-- 午前 -->
-        <div class="glass rounded-2xl p-5 shadow-md">
-          <h3 class="text-lg font-bold text-slate-600 mb-4 flex items-center gap-2">
-            <span class="w-2 h-8 bg-orange-400 rounded-full"></span>
-            午前
-          </h3>
-          <div id="container-morning" class="space-y-4"></div>
+    <!-- History Button -->
+    <button onclick="toggleHistory()"
+      class="fixed bottom-4 left-4 z-50 p-3 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md transition text-white shadow-lg"
+      title="過去の履歴">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+      </svg>
+    </button>
+
+    <!-- History Modal -->
+    <div id="history-modal"
+      class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
+      <div
+        class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300"
+        id="history-content">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-gray-800">過去の表彰履歴</h3>
+          <button onclick="toggleHistory()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+              </path>
+            </svg>
+          </button>
         </div>
-
-        <!-- 午後 -->
-        <div class="glass rounded-2xl p-5 shadow-md">
-          <h3 class="text-lg font-bold text-slate-600 mb-4 flex items-center gap-2">
-            <span class="w-2 h-8 bg-indigo-400 rounded-full"></span>
-            午後
-          </h3>
-          <div id="container-afternoon" class="space-y-4"></div>
+        <div id="history-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+          <!-- History items -->
         </div>
+      </div>
+    </div>
 
-        <!-- 1日全体 -->
+    <!-- Winner Spotlight Modal -->
+    <div id="spotlight-modal" onclick="closeSpotlight()"
+      class="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-500 cursor-pointer">
+      <div class="text-center transform scale-50 transition-transform duration-500" id="spotlight-content">
+        <div class="text-2xl md:text-4xl font-bold text-white/80 mb-4 tracking-widest uppercase" id="spotlight-label">
+          LABEL</div>
+        <div class="text-6xl md:text-9xl font-black text-white mb-8 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+          id="spotlight-name">NAME</div>
         <div
-          class="glass rounded-2xl p-5 shadow-xl transform md:-translate-y-2 border-2 border-yellow-400/30 bg-yellow-50/50">
-          <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2">
-            <span class="w-2 h-8 bg-yellow-500 rounded-full"></span>
-            <span class="gold-text text-xl">1日全体</span>
-          </h3>
-          <div id="container-fullday" class="space-y-4"></div>
-        </div>
-
+          class="text-4xl md:text-6xl font-eng font-bold text-[var(--accent-color)] bg-white/10 inline-block px-8 py-4 rounded-2xl backdrop-blur-xl border border-white/30"
+          id="spotlight-value">VALUE</div>
       </div>
     </div>
   </div>
 
   <template id="card-template">
-    <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100">
-      <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-1 label-field">CATEGORY</div>
-      <div class="flex justify-between items-end">
-        <div class="font-bold text-lg text-slate-800 name-field truncate pr-2">Name</div>
-        <div class="font-mono font-bold text-xl text-blue-600 value-field">Value</div>
+    <div onclick="openSpotlight(this)"
+      class="flex items-center justify-between p-5 rounded-2xl bg-white/50 hover:bg-white/80 transition border border-white/40 shadow-sm group cursor-pointer hover:scale-[1.02] active:scale-95">
+      <div>
+        <div
+          class="text-xs font-bold opacity-60 uppercase tracking-wider mb-1 label-field group-hover:text-[var(--accent-color)] transition-colors">
+          LABEL</div>
+        <div class="font-bold text-2xl name-field">Name</div>
+      </div>
+      <div class="font-eng font-black text-3xl text-[var(--accent-color)] value-field drop-shadow-sm">Value
       </div>
     </div>
   </template>
 
   <script>
-    const LABELS = {
-      processing: '処理数 1位',
-      orders: '受注数 1位',
-      sales: '売上 1位'
+    let config = {
+      labels: { processing: '処理数', orders: '受注数', sales: '売上' },
+      theme: 'default'
     };
+    let fullData = null;
 
-    async function loadData() {
+    function setTheme(themeName) {
+      document.documentElement.setAttribute('data-theme', themeName);
+      if (themeName === 'default') document.documentElement.removeAttribute('data-theme');
+
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: themeName === 'dark' ? ['#818cf8', '#c084fc'] : ['#f97316', '#facc15']
+      });
+    }
+
+    function switchTab(tab) {
+      const morningSec = document.getElementById('section-morning');
+      const afternoonSec = document.getElementById('section-afternoon');
+      const morningBtn = document.getElementById('tab-morning');
+      const afternoonBtn = document.getElementById('tab-afternoon');
+
+      if (tab === 'morning') {
+        setTheme('default');
+        morningSec.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
+        afternoonSec.classList.add('opacity-0', 'translate-x-10', 'pointer-events-none');
+
+        morningBtn.classList.add('active');
+        afternoonBtn.classList.remove('active');
+      } else {
+        setTheme('blue');
+        afternoonSec.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
+        morningSec.classList.add('opacity-0', '-translate-x-10', 'pointer-events-none'); // Slide left
+
+        afternoonBtn.classList.add('active');
+        morningBtn.classList.remove('active');
+      }
+    }
+
+    // Spotlight
+    function openSpotlight(card) {
+      const label = card.querySelector('.label-field').textContent;
+      const name = card.querySelector('.name-field').textContent;
+      const value = card.querySelector('.value-field').textContent;
+
+      if (name === '-' || name === '') return;
+
+      document.getElementById('spotlight-label').textContent = label;
+      document.getElementById('spotlight-name').textContent = name;
+      document.getElementById('spotlight-value').textContent = value;
+
+      const modal = document.getElementById('spotlight-modal');
+      const content = document.getElementById('spotlight-content');
+
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-50');
+      content.classList.add('scale-100');
+
+      // Intense confetti
+      var duration = 3000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#ffffff', '#fbbf24']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#ffffff', '#fbbf24']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    function closeSpotlight() {
+      const modal = document.getElementById('spotlight-modal');
+      const content = document.getElementById('spotlight-content');
+
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-50');
+    }
+
+    // History
+    function toggleHistory() {
+      const modal = document.getElementById('history-modal');
+      const content = document.getElementById('history-content');
+
+      if (modal.classList.contains('opacity-0')) {
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
+        renderHistoryList();
+      } else {
+        modal.classList.add('opacity-0', 'pointer-events-none');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
+      }
+    }
+
+    function renderHistoryList() {
+      const list = document.getElementById('history-list');
+      list.innerHTML = '';
+
+      if (!fullData || !fullData.history || fullData.history.length === 0) {
+        list.innerHTML = '<div class="text-center text-gray-400 py-4">履歴はありません</div>';
+        return;
+      }
+
+      // Add "Current" option
+      const currentBtn = document.createElement('button');
+      currentBtn.className = 'w-full p-4 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-left transition flex justify-between items-center';
+      currentBtn.innerHTML = '<span>最新のデータ</span><span class="text-xs bg-blue-200 px-2 py-1 rounded">NOW</span>';
+      currentBtn.onclick = () => {
+        loadData(true); // Force reload current
+        toggleHistory();
+      };
+      list.appendChild(currentBtn);
+
+      fullData.history.forEach(record => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full p-4 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-left transition';
+        btn.textContent = record.date;
+        btn.onclick = () => {
+          loadRecord(record);
+          toggleHistory();
+        };
+        list.appendChild(btn);
+      });
+    }
+
+    function loadRecord(record) {
+      if (record.config) config = record.config;
+      render(record);
+      // Reset tab to morning
+      switchTab('morning');
+    }
+
+    async function loadData(force = false) {
       let data = null;
-
-      // 1. Try fetching award.json
       try {
         const res = await fetch('award.json?t=' + new Date().getTime());
-        if (res.ok) {
-          data = await res.json();
-        }
-      } catch (e) { console.error(e); }
+        if (res.ok) data = await res.json();
+      } catch (e) { }
 
-      // 2. Fallback to localStorage if json is missing (for local testing)
       if (!data) {
         const local = localStorage.getItem('AWARD_DATA_V2');
         if (local) data = JSON.parse(local);
       }
 
-      if (data) render(data);
+      if (data) {
+        fullData = data;
+        if (data.config) config = data.config;
+        if (config.theme) setTheme(config.theme);
+        render(data);
+      }
     }
 
     function render(data) {
       document.getElementById('display-date').textContent = data.date || '--/--';
       document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
 
-      const sections = ['current', 'today_summary', 'morning', 'afternoon', 'fullday'];
-
-      sections.forEach(sec => {
+      ['morning', 'afternoon'].forEach(sec => {
         const container = document.getElementById(`container-${sec}`);
         if (!container) return;
         container.innerHTML = '';
 
         const secData = data[sec] || {};
-
-        // Define order
         const fields = ['processing', 'orders', 'sales'];
 
         fields.forEach(field => {
           const item = secData[field] || { name: '-', value: '-' };
+          const label = config.labels[field] || field;
 
           const template = document.getElementById('card-template').content.cloneNode(true);
-          template.querySelector('.label-field').textContent = LABELS[field];
+          template.querySelector('.label-field').textContent = label;
           template.querySelector('.name-field').textContent = item.name || '-';
           template.querySelector('.value-field').textContent = item.value || '-';
-
-          // Highlight for Fullday
-          if (sec === 'fullday') {
-            template.querySelector('.value-field').classList.add('text-2xl', 'text-yellow-600');
-            template.querySelector('.value-field').classList.remove('text-blue-600');
-          }
 
           container.appendChild(template);
         });
       });
     }
 
-    // Auto reload every 5 minutes
+    // Initial confetti
+    setTimeout(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }, 500);
+
     setInterval(loadData, 300000);
     loadData();
   </script>

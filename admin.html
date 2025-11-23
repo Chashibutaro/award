@@ -7,29 +7,29 @@
     <title>表彰データ 管理画面</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .outline-node {
+        @import url('https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;700;900&display=swap');
+
+        body {
+            font-family: 'Zen Kaku Gothic New', sans-serif;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        .editable {
             transition: all 0.2s;
-        }
-
-        .outline-node:hover {
-            background-color: rgba(0, 0, 0, 0.02);
-        }
-
-        .editable:hover {
-            background-color: rgba(255, 255, 0, 0.1);
-            cursor: text;
-            border-radius: 4px;
+            border-bottom: 1px dashed #cbd5e1;
+            padding: 10px 12px;
         }
 
         .editable:focus {
-            background-color: white;
-            outline: 2px solid #3b82f6;
-            border-radius: 4px;
-            padding: 2px 4px;
-        }
-
-        details>summary {
-            list-style: none;
+            outline: none;
+            border-bottom: 2px solid #3b82f6;
+            background: rgba(255, 255, 255, 0.8);
         }
 
         details>summary::-webkit-details-marker {
@@ -37,7 +37,6 @@
         }
 
         .arrow {
-            display: inline-block;
             transition: transform 0.2s;
         }
 
@@ -47,134 +46,212 @@
     </style>
 </head>
 
-<body class="bg-gray-50 min-h-screen text-gray-800 font-sans">
-    <div class="max-w-4xl mx-auto p-6">
-        <header class="flex justify-between items-center mb-8 border-b pb-4">
+<body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen text-slate-800">
+
+    <div class="max-w-5xl mx-auto p-6">
+        <!-- Header -->
+        <header class="flex justify-between items-end mb-8 pb-4 border-b border-slate-300/50">
             <div>
-                <h1 class="text-2xl font-bold text-gray-900">表彰データ 管理画面</h1>
-                <p class="text-sm text-gray-500">アウトライン形式でデータを編集できます</p>
+                <h1 class="text-3xl font-black tracking-tight text-slate-900">ADMIN DASHBOARD</h1>
+                <p class="text-sm text-slate-500 font-medium">表彰データ管理システム</p>
             </div>
-            <div class="flex gap-2">
-                <a href="./表彰用.html" target="_blank"
-                    class="px-4 py-2 bg-white border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 shadow-sm">
-                    プレビュー
-                </a>
-                <button onclick="saveToLocalStorage()"
-                    class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 shadow-sm font-medium">
-                    一時保存 (Local)
+            <div class="flex gap-3">
+                <button onclick="archiveData()"
+                    class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold shadow-sm shadow-blue-200 transition flex items-center gap-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4">
+                        </path>
+                    </svg>
+                    アーカイブ保存
                 </button>
+                <a href="./表彰用.html" target="_blank"
+                    class="px-5 py-2.5 bg-white/80 hover:bg-white border border-slate-200 rounded-xl text-slate-600 font-bold shadow-sm transition flex items-center gap-2">
+                    一時保存 (Local)
+                </a>
             </div>
         </header>
 
-        <main class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            <!-- 左側: アウトラインエディタ -->
-            <div class="lg:col-span-2 bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
-                <div class="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-                    <h2 class="font-semibold text-gray-700">データ編集</h2>
-                    <div class="text-sm text-gray-500">
-                        日付: <span id="date-display" class="editable font-mono font-bold text-gray-900 px-2"
-                            contenteditable="true">--/--</span>
+        <main class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- Main Editor Area -->
+            <div class="lg:col-span-8 space-y-6">
+
+                <!-- Settings Panel -->
+                <div class="glass-panel rounded-2xl overflow-hidden">
+                    <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
+                        <h2 class="font-bold text-slate-700 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                            項目名設定
+                        </h2>
+                    </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">項目1</label>
+                            <input type="text" id="label-processing"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                onchange="updateConfig()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">項目2</label>
+                            <input type="text" id="label-orders"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                onchange="updateConfig()">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-400 uppercase mb-1">項目3</label>
+                            <input type="text" id="label-sales"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-blue-500 outline-none transition"
+                                onchange="updateConfig()">
+                        </div>
                     </div>
                 </div>
-                <div id="outline-container" class="p-6 space-y-4">
-                    <!-- JSで生成 -->
+
+                <!-- Data Editor -->
+                <div class="glass-panel rounded-2xl overflow-hidden min-h-[400px]">
+                    <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
+                        <h2 class="font-bold text-slate-700 flex items-center gap-2">
+                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                </path>
+                            </svg>
+                            データ編集
+                        </h2>
+                        <div
+                            class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
+                            <span class="text-xs font-bold text-slate-400">DATE</span>
+                            <span id="date-display" class="editable font-mono font-bold text-lg text-blue-600 px-2"
+                                contenteditable="true">--/--</span>
+                        </div>
+                    </div>
+                    <div id="outline-container" class="p-6 space-y-4">
+                        <!-- Generated Content -->
+                    </div>
                 </div>
             </div>
 
-            <!-- 右側: 公開設定 -->
-            <div class="space-y-6">
-                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-5">
-                    <h3 class="font-bold text-gray-800 mb-4 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12">
-                            </path>
+            <!-- Sidebar: GitHub Settings -->
+            <div class="lg:col-span-4 space-y-6">
+                <div class="glass-panel rounded-2xl p-6 sticky top-6">
+                    <h3 class="font-bold text-slate-800 mb-1 flex items-center gap-2">
+                        <svg class="w-5 h-5 text-teal-600" fill="currentColor" viewBox="0 0 24 24">
+                            <path
+                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
                         </svg>
-                        公開 (GitHub)
+                        公開設定 (GitHub)
                     </h3>
-                    <p class="text-xs text-gray-600 mb-4">
-                        変更をサーバー(GitHub)に保存し、全員が見られるようにします。
+                    <p class="text-xs text-slate-500 mb-6 leading-relaxed">
+                        設定はブラウザに自動保存されます。<br>次回から入力不要です。
                     </p>
 
-                    <div class="space-y-3 mb-4">
-                        <input id="gh-owner" type="text" placeholder="Owner (User)"
-                            class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                        <input id="gh-repo" type="text" placeholder="Repository"
-                            class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500">
-                        <input id="gh-token" type="password" placeholder="Personal Access Token"
-                            class="w-full text-sm border-gray-300 rounded-md shadow-sm focus:border-teal-500 focus:ring-teal-500">
+                    <div class="space-y-4 mb-6">
+                        <div class="relative">
+                            <label
+                                class="absolute -top-2 left-2 bg-white px-1 text-[10px] font-bold text-slate-400">OWNER</label>
+                            <input id="gh-owner" type="text"
+                                class="w-full text-sm border-slate-200 rounded-lg shadow-sm focus:border-teal-500 focus:ring-teal-500 pt-3 pb-2 px-3 transition">
+                        </div>
+                        <div class="relative">
+                            <label
+                                class="absolute -top-2 left-2 bg-white px-1 text-[10px] font-bold text-slate-400">REPOSITORY</label>
+                            <input id="gh-repo" type="text"
+                                class="w-full text-sm border-slate-200 rounded-lg shadow-sm focus:border-teal-500 focus:ring-teal-500 pt-3 pb-2 px-3 transition">
+                        </div>
+                        <div class="relative">
+                            <label
+                                class="absolute -top-2 left-2 bg-white px-1 text-[10px] font-bold text-slate-400">TOKEN</label>
+                            <input id="gh-token" type="password"
+                                class="w-full text-sm border-slate-200 rounded-lg shadow-sm focus:border-teal-500 focus:ring-teal-500 pt-3 pb-2 px-3 transition">
+                        </div>
                     </div>
 
                     <button onclick="saveToGitHub()"
-                        class="w-full py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 shadow-md font-bold transition transform active:scale-95">
-                        公開する
+                        class="w-full py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 shadow-lg shadow-teal-200 font-bold transition transform active:scale-95 flex justify-center items-center gap-2">
+                        <span>公開する</span>
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
+                        </svg>
                     </button>
-                    <p id="status-msg" class="text-xs text-center mt-2 text-gray-500 h-4"></p>
-                </div>
-
-                <div class="bg-blue-50 rounded-xl p-5 border border-blue-100">
-                    <h4 class="text-sm font-bold text-blue-800 mb-2">ヒント</h4>
-                    <ul class="text-xs text-blue-700 space-y-1 list-disc list-inside">
-                        <li>テキストをクリックして直接編集できます</li>
-                        <li>「公開する」を押すと数分で反映されます</li>
-                        <li>自分専用の編集画面です</li>
-                    </ul>
+                    <p id="status-msg" class="text-xs text-center mt-3 text-slate-500 font-medium h-4"></p>
                 </div>
             </div>
         </main>
     </div>
 
     <script>
-        // データ構造の定義（表示順序とラベル）
         const SECTIONS = [
-            { id: 'current', label: '今の現状' },
-            { id: 'today_summary', label: '今日の現状' },
-            { id: 'morning', label: '午前' },
-            { id: 'afternoon', label: '午後' },
-            { id: 'fullday', label: '1日全体' }
+            { id: 'morning', label: '午前の部' },
+            { id: 'afternoon', label: '午後の部' }
         ];
-
-        const FIELDS = [
-            { id: 'processing', label: '処理数 1位' },
-            { id: 'orders', label: '受注数 1位' },
-            { id: 'sales', label: '売上 1位' }
-        ];
+        const FIELDS = ['processing', 'orders', 'sales'];
 
         let currentData = {
-            date: "10/15",
-            current: {}, today_summary: {}, morning: {}, afternoon: {}, fullday: {}
+            config: {
+                labels: { processing: '処理数 1位', orders: '受注数 1位', sales: '売上 1位' },
+                theme: 'default'
+            },
+            date: "--/--",
+            morning: {}, afternoon: {}, fullday: {}, current: {}, today_summary: {}, history: []
         };
 
-        // 初期化
         async function init() {
-            // LocalStorage優先、なければデフォルト
+            // 1. Load Data
             const local = localStorage.getItem('AWARD_DATA_V2');
             if (local) {
                 try {
-                    currentData = JSON.parse(local);
+                    const parsed = JSON.parse(local);
+                    currentData = { ...currentData, ...parsed };
+                    if (!currentData.config) {
+                        currentData.config = {
+                            labels: { processing: '処理数 1位', orders: '受注数 1位', sales: '売上 1位' },
+                            theme: 'default'
+                        };
+                    }
                 } catch (e) { console.error(e); }
             } else {
-                // award.jsonがあればそこから読み込む（初回用）
                 try {
                     const res = await fetch('award.json');
                     if (res.ok) {
                         const json = await res.json();
-                        // マージ
                         currentData = { ...currentData, ...json };
                     }
                 } catch (e) { }
             }
 
+            // 2. Render
+            renderConfig();
             renderOutline();
+
+            // 3. Restore GitHub Settings (including Token)
             restoreGitHubSettings();
         }
 
-        // アウトラインの描画
+        function renderConfig() {
+            document.getElementById('label-processing').value = currentData.config.labels.processing;
+            document.getElementById('label-orders').value = currentData.config.labels.orders;
+            document.getElementById('label-sales').value = currentData.config.labels.sales;
+        }
+
+        function updateConfig() {
+            currentData.config.labels.processing = document.getElementById('label-processing').value;
+            currentData.config.labels.orders = document.getElementById('label-orders').value;
+            currentData.config.labels.sales = document.getElementById('label-sales').value;
+            renderOutline();
+            autoSave();
+        }
+
         function renderOutline() {
             const container = document.getElementById('outline-container');
             container.innerHTML = '';
 
-            // 日付
             document.getElementById('date-display').textContent = currentData.date || '--/--';
             document.getElementById('date-display').onblur = (e) => {
                 currentData.date = e.target.textContent.trim();
@@ -185,41 +262,51 @@
                 const sectionData = currentData[section.id] || {};
 
                 const details = document.createElement('details');
-                details.open = true; // デフォルト展開
-                details.className = 'group bg-white rounded-lg border border-gray-100 shadow-sm mb-2';
+                details.open = true;
+                details.className = 'group bg-white rounded-xl border border-slate-100 shadow-sm mb-4 overflow-hidden';
 
                 const summary = document.createElement('summary');
-                summary.className = 'cursor-pointer p-3 bg-gray-50 hover:bg-gray-100 rounded-t-lg font-bold text-gray-700 flex items-center select-none';
+                summary.className = 'cursor-pointer p-4 bg-slate-50/50 hover:bg-slate-100/80 font-bold text-slate-700 flex items-center justify-between select-none transition';
                 summary.innerHTML = `
-                    <span class="arrow mr-2 text-gray-400">▶</span>
-                    ${section.label}
+                    <div class="flex items-center">
+                        <span class="arrow mr-3 text-slate-400 bg-white rounded-full p-1 shadow-sm">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                        </span>
+                        ${section.label}
+                    </div>
+                    <button onclick="clearSection('${section.id}', event)" 
+                        class="text-xs bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        クリア
+                    </button>
                 `;
                 details.appendChild(summary);
 
                 const content = document.createElement('div');
-                content.className = 'p-4 space-y-3 border-t border-gray-100';
+                content.className = 'p-5 space-y-4 border-t border-slate-100';
 
-                FIELDS.forEach(field => {
-                    const fieldData = sectionData[field.id] || { name: '', value: '' };
+                FIELDS.forEach(fieldId => {
+                    const fieldData = sectionData[fieldId] || { name: '', value: '' };
+                    const label = currentData.config.labels[fieldId] || fieldId;
 
                     const row = document.createElement('div');
                     row.className = 'flex items-center gap-4 text-sm';
 
                     row.innerHTML = `
-                        <div class="w-24 font-medium text-gray-500 text-right flex-shrink-0">${field.label}</div>
-                        <div class="flex-1 grid grid-cols-2 gap-2">
+                        <div class="w-28 font-bold text-slate-400 text-right flex-shrink-0 text-xs uppercase tracking-wider pt-2">${label}</div>
+                        <div class="flex-1 grid grid-cols-2 gap-3">
                             <div class="relative group/input">
-                                <span class="absolute -top-2 left-2 text-[10px] text-gray-400 bg-white px-1 opacity-0 group-hover/input:opacity-100 transition">ISR名</span>
-                                <div class="editable p-2 border border-transparent hover:border-gray-200" contenteditable="true" 
-                                     data-section="${section.id}" data-field="${field.id}" data-key="name">
-                                     ${fieldData.name || '-'}
+                                <span class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">NAME</span>
+                                <div class="editable p-2.5 text-slate-700 font-medium" contenteditable="true" 
+                                     data-section="${section.id}" data-field="${fieldId}" data-key="name">
+                                     ${fieldData.name || ''}
                                 </div>
                             </div>
                             <div class="relative group/input">
-                                <span class="absolute -top-2 left-2 text-[10px] text-gray-400 bg-white px-1 opacity-0 group-hover/input:opacity-100 transition">値</span>
-                                <div class="editable p-2 border border-transparent hover:border-gray-200 text-right font-mono" contenteditable="true"
-                                     data-section="${section.id}" data-field="${field.id}" data-key="value">
-                                     ${fieldData.value || '-'}
+                                <span class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">VALUE</span>
+                                <div class="editable p-2.5 text-right font-mono font-bold text-slate-700" contenteditable="true"
+                                     data-section="${section.id}" data-field="${fieldId}" data-key="value">
+                                     ${fieldData.value || ''}
                                 </div>
                             </div>
                         </div>
@@ -231,7 +318,6 @@
                 container.appendChild(details);
             });
 
-            // イベントリスナー設定
             document.querySelectorAll('.editable').forEach(el => {
                 el.addEventListener('blur', (e) => {
                     const section = e.target.dataset.section;
@@ -248,46 +334,94 @@
             });
         }
 
+        function clearSection(sectionId, event) {
+            event.preventDefault();
+            event.stopPropagation();
+
+            const label = SECTIONS.find(s => s.id === sectionId)?.label || sectionId;
+            if (!confirm(`${label} の入力内容をすべてクリアしますか？`)) return;
+
+            if (currentData[sectionId]) {
+                FIELDS.forEach(field => {
+                    if (currentData[sectionId][field]) {
+                        currentData[sectionId][field].name = '';
+                        currentData[sectionId][field].value = '';
+                    }
+                });
+                renderOutline();
+                autoSave();
+            }
+        }
+
         function autoSave() {
             localStorage.setItem('AWARD_DATA_V2', JSON.stringify(currentData));
-            document.getElementById('status-msg').textContent = 'ローカルに保存しました';
-            setTimeout(() => document.getElementById('status-msg').textContent = '', 2000);
+            const msg = document.getElementById('status-msg');
+            msg.textContent = '保存しました';
+            msg.classList.add('text-teal-600');
+            setTimeout(() => {
+                msg.textContent = '';
+                msg.classList.remove('text-teal-600');
+            }, 2000);
         }
 
-        function saveToLocalStorage() {
+        function archiveData() {
+            if (!currentData.date || currentData.date === '--/--') {
+                alert('日付が設定されていません。');
+                return;
+            }
+            if (!confirm(`${currentData.date} のデータをアーカイブ（履歴保存）しますか？`)) return;
+
+            if (!currentData.history) currentData.history = [];
+
+            const existingIndex = currentData.history.findIndex(h => h.date === currentData.date);
+
+            const record = JSON.parse(JSON.stringify({
+                date: currentData.date,
+                config: currentData.config,
+                morning: currentData.morning,
+                afternoon: currentData.afternoon,
+                fullday: currentData.fullday
+            }));
+
+            if (existingIndex >= 0) {
+                currentData.history[existingIndex] = record;
+                alert('既存の履歴を上書きしました。');
+            } else {
+                currentData.history.unshift(record);
+                alert('履歴に追加しました。');
+            }
             autoSave();
-            alert('ローカルに保存しました。');
         }
 
-        // GitHub設定の復元
         function restoreGitHubSettings() {
-            const settings = JSON.parse(localStorage.getItem('GH_SETTINGS') || '{}');
+            const settings = JSON.parse(localStorage.getItem('GH_SETTINGS_V2') || '{}');
             if (settings.owner) document.getElementById('gh-owner').value = settings.owner;
             if (settings.repo) document.getElementById('gh-repo').value = settings.repo;
-            // Tokenはセキュリティ上保存しないか、SessionStorageにするのが一般的だが、
-            // 利便性のためLocalStorageに入れる場合は注意が必要。ここでは入力値を維持する簡易実装。
+            if (settings.token) document.getElementById('gh-token').value = settings.token;
         }
 
-        async function saveToGitHub() {
+        function saveGitHubSettings() {
             const owner = document.getElementById('gh-owner').value.trim();
             const repo = document.getElementById('gh-repo').value.trim();
             const token = document.getElementById('gh-token').value.trim();
+            localStorage.setItem('GH_SETTINGS_V2', JSON.stringify({ owner, repo, token }));
+            return { owner, repo, token };
+        }
 
+        async function saveToGitHub() {
+            const { owner, repo, token } = saveGitHubSettings();
             if (!owner || !repo || !token) {
                 alert('GitHub設定（Owner, Repo, Token）を入力してください');
                 return;
             }
 
-            // 設定を保存
-            localStorage.setItem('GH_SETTINGS', JSON.stringify({ owner, repo }));
-
             const btn = document.querySelector('button[onclick="saveToGitHub()"]');
-            const originalText = btn.textContent;
-            btn.textContent = '送信中...';
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML = '<span>送信中...</span>';
             btn.disabled = true;
+            btn.classList.add('opacity-50', 'cursor-not-allowed');
 
             try {
-                // 1. Get SHA
                 const url = `https://api.github.com/repos/${owner}/${repo}/contents/award.json`;
                 const headers = {
                     'Authorization': `token ${token}`,
@@ -301,10 +435,8 @@
                         const data = await getRes.json();
                         sha = data.sha;
                     }
-                } catch (e) { console.log('File not found, creating new.'); }
+                } catch (e) { }
 
-                // 2. Put Content
-                // JSONを整形して保存
                 const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
 
                 const putRes = await fetch(url, {
@@ -318,19 +450,23 @@
                 });
 
                 if (putRes.ok) {
-                    alert('公開しました！反映まで少し時間がかかります。');
+                    alert('公開しました！反映まで数分かかります。');
                 } else {
                     const err = await putRes.json();
                     alert('エラーが発生しました: ' + (err.message || 'Unknown error'));
                 }
-
             } catch (e) {
                 alert('通信エラー: ' + e.message);
             } finally {
-                btn.textContent = originalText;
+                btn.innerHTML = originalHTML;
                 btn.disabled = false;
+                btn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
+
+        ['gh-owner', 'gh-repo', 'gh-token'].forEach(id => {
+            document.getElementById(id).addEventListener('change', saveGitHubSettings);
+        });
 
         init();
     </script>
