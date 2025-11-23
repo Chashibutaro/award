@@ -58,6 +58,46 @@
   },
   "history": [
     {
+      "date": "11/24",
+      "config": {
+        "labels": {
+          "processing": "処理数 1位",
+          "orders": "GM数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "11/24",
+          "value": "11/24"
+        },
+        "orders": {
+          "name": "11/24",
+          "value": "11/24"
+        },
+        "sales": {
+          "name": "11/24",
+          "value": "11/24"
+        }
+      },
+      "afternoon": {
+        "orders": {
+          "name": "11/24",
+          "value": "11/24"
+        },
+        "processing": {
+          "name": "11/24",
+          "value": "11/24"
+        },
+        "sales": {
+          "name": "11/24",
+          "value": "11/24"
+        }
+      },
+      "fullday": {}
+    },
+    {
       "date": "11/23",
       "config": {
         "labels": {
