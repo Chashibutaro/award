@@ -2,59 +2,67 @@
   "config": {
     "labels": {
       "processing": "処理数 1位",
-      "orders": "GM数 1位",
+      "orders": "受注数 1位",
       "sales": "売上 1位"
     },
     "theme": "default"
   },
-  "date": "11/24",
+  "date": "11/23",
   "morning": {
     "processing": {
-      "name": "11/24",
-      "value": "11/24"
+      "name": "",
+      "value": ""
     },
     "orders": {
-      "name": "11/24",
-      "value": "11/24"
+      "name": "",
+      "value": ""
     },
     "sales": {
-      "name": "11/24",
-      "value": "11/24"
+      "name": "",
+      "value": ""
     }
   },
   "afternoon": {
-    "orders": {
-      "name": "11/24",
-      "value": "11/24"
-    },
     "processing": {
-      "name": "11/24",
-      "value": "11/24"
-    },
-    "sales": {
-      "name": "11/24",
-      "value": "11/24"
+      "name": "",
+      "value": ""
     }
   },
   "fullday": {},
-  "current": {
-    "processing": {
-      "name": "砂糖",
-      "value": "14"
-    },
-    "orders": {
-      "name": "-",
-      "value": "-"
-    },
-    "sales": {
-      "value": "-",
-      "name": "-"
+  "current": {},
+  "today_summary": {},
+  "history": [
+    {
+      "date": "11/23",
+      "config": {
+        "labels": {
+          "processing": "処理数 1位",
+          "orders": "受注数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "テスト",
+          "value": "テスト"
+        },
+        "orders": {
+          "name": "テスト",
+          "value": "テスト"
+        },
+        "sales": {
+          "name": "テスト",
+          "value": "テスト"
+        }
+      },
+      "afternoon": {
+        "processing": {
+          "name": "テスト",
+          "value": "テスト"
+        }
+      },
+      "fullday": {}
     }
-  },
-  "today_summary": {
-    "processing": {
-      "name": ""
-    }
-  },
-  "history": []
+  ]
 }
