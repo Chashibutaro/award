@@ -2,42 +2,96 @@
   "config": {
     "labels": {
       "processing": "処理数 1位",
-      "orders": "受注数 1位",
+      "orders": "GM数 1位",
       "sales": "売上 1位"
     },
     "theme": "default"
   },
-  "date": "--/--",
+  "date": "11/25",
   "morning": {
     "processing": {
-      "name": "-",
-      "value": "-"
+      "name": "",
+      "value": ""
     },
     "orders": {
-      "name": "-",
-      "value": "-"
+      "name": "",
+      "value": ""
     },
     "sales": {
-      "name": "-",
-      "value": "-"
+      "name": "",
+      "value": ""
     }
   },
   "afternoon": {
+    "orders": {
+      "name": "",
+      "value": ""
+    },
     "processing": {
-      "name": "-",
-      "value": "-"
+      "name": "",
+      "value": ""
+    },
+    "sales": {
+      "name": "",
+      "value": ""
+    }
+  },
+  "fullday": {},
+  "current": {
+    "processing": {
+      "name": "砂糖",
+      "value": "14"
     },
     "orders": {
       "name": "-",
       "value": "-"
     },
     "sales": {
-      "name": "-",
-      "value": "-"
+      "value": "-",
+      "name": "-"
     }
   },
-  "fullday": {},
-  "current": {},
-  "today_summary": {},
-  "history": []
+  "today_summary": {
+    "processing": {
+      "name": "-"
+    }
+  },
+  "history": [
+    {
+      "date": "11/23",
+      "config": {
+        "labels": {
+          "processing": "処理数 1位",
+          "orders": "GM数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "",
+          "value": ""
+        },
+        "orders": {
+          "name": "-だ"
+        },
+        "sales": {
+          "name": ""
+        }
+      },
+      "afternoon": {
+        "orders": {
+          "name": "-"
+        },
+        "processing": {
+          "name": "-"
+        },
+        "sales": {
+          "name": "布施",
+          "value": "$4,000"
+        }
+      },
+      "fullday": {}
+    }
+  ]
 }
