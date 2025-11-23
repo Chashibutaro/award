@@ -96,42 +96,6 @@
         }
       },
       "fullday": {}
-    },
-    {
-      "date": "11/23",
-      "config": {
-        "labels": {
-          "processing": "処理数 1位",
-          "orders": "GM数 1位",
-          "sales": "売上 1位"
-        },
-        "theme": "default"
-      },
-      "morning": {
-        "processing": {
-          "name": "",
-          "value": ""
-        },
-        "orders": {
-          "name": "-だ"
-        },
-        "sales": {
-          "name": ""
-        }
-      },
-      "afternoon": {
-        "orders": {
-          "name": "-"
-        },
-        "processing": {
-          "name": "-"
-        },
-        "sales": {
-          "name": "布施",
-          "value": "$4,000"
-        }
-      },
-      "fullday": {}
     }
   ]
 }
