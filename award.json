@@ -7,33 +7,33 @@
     },
     "theme": "default"
   },
-  "date": "11/25",
+  "date": "11/24",
   "morning": {
     "processing": {
-      "name": "",
-      "value": ""
+      "name": "11/24",
+      "value": "11/24"
     },
     "orders": {
-      "name": "",
-      "value": ""
+      "name": "11/24",
+      "value": "11/24"
     },
     "sales": {
-      "name": "",
-      "value": ""
+      "name": "11/24",
+      "value": "11/24"
     }
   },
   "afternoon": {
     "orders": {
-      "name": "",
-      "value": ""
+      "name": "11/24",
+      "value": "11/24"
     },
     "processing": {
-      "name": "",
-      "value": ""
+      "name": "11/24",
+      "value": "11/24"
     },
     "sales": {
-      "name": "",
-      "value": ""
+      "name": "11/24",
+      "value": "11/24"
     }
   },
   "fullday": {},
@@ -53,45 +53,8 @@
   },
   "today_summary": {
     "processing": {
-      "name": "-"
+      "name": ""
     }
   },
-  "history": [
-    {
-      "date": "11/23",
-      "config": {
-        "labels": {
-          "processing": "処理数 1位",
-          "orders": "GM数 1位",
-          "sales": "売上 1位"
-        },
-        "theme": "default"
-      },
-      "morning": {
-        "processing": {
-          "name": "",
-          "value": ""
-        },
-        "orders": {
-          "name": "-だ"
-        },
-        "sales": {
-          "name": ""
-        }
-      },
-      "afternoon": {
-        "orders": {
-          "name": "-"
-        },
-        "processing": {
-          "name": "-"
-        },
-        "sales": {
-          "name": "布施",
-          "value": "$4,000"
-        }
-      },
-      "fullday": {}
-    }
-  ]
+  "history": []
 }
