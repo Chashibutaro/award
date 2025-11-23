@@ -1,73 +1,43 @@
 {
-  "date": "11/23",
-  "current": {
-    "processing": {
-      "name": "砂糖",
-      "value": "14"
+  "config": {
+    "labels": {
+      "processing": "処理数 1位",
+      "orders": "受注数 1位",
+      "sales": "売上 1位"
     },
-    "orders": {
-      "name": "-",
-      "value": "-"
-    },
-    "sales": {
-      "value": "-",
-      "name": "-"
-    }
+    "theme": "default"
   },
-  "today_summary": {
-    "processing": {
-      "name": "-",
-      "value": "-"
-    },
-    "orders": {
-      "name": "-",
-      "value": "-"
-    },
-    "sales": {
-      "name": "-",
-      "value": "-"
-    }
-  },
+  "date": "--/--",
   "morning": {
     "processing": {
-      "name": "田中商店",
-      "value": "152件"
+      "name": "-",
+      "value": "-"
     },
     "orders": {
-      "name": "鈴木工業",
-      "value": "98件"
+      "name": "-",
+      "value": "-"
     },
     "sales": {
-      "name": "佐藤物産",
-      "value": "¥2,450,000"
+      "name": "-",
+      "value": "-"
     }
   },
   "afternoon": {
     "processing": {
-      "name": "山田商事",
-      "value": "203件"
+      "name": "-",
+      "value": "-"
     },
     "orders": {
-      "name": "田中商店",
-      "value": "145件"
+      "name": "-",
+      "value": "-"
     },
     "sales": {
-      "name": "鈴木工業",
-      "value": "¥3,120,000"
+      "name": "-",
+      "value": "-"
     }
   },
-  "fullday": {
-    "processing": {
-      "name": "田中商店",
-      "value": "355件"
-    },
-    "orders": {
-      "name": "鈴木工業",
-      "value": "243件"
-    },
-    "sales": {
-      "name": "佐藤物産",
-      "value": "¥5,570,000"
-    }
-  }
+  "fullday": {},
+  "current": {},
+  "today_summary": {},
+  "history": []
 }
