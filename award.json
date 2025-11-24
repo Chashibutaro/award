@@ -20,10 +20,10 @@
     "processing": {
       "name": "テスト",
       "value": "50",
-      "comment": "素晴らしい"
+      "comment": ""
     },
     "orders": {
-      "name": "テスト",
+      "name": "",
       "value": "16166",
       "comment": ""
     },
@@ -71,5 +71,5 @@
     }
   },
   "history": [],
-  "lastUpdated": "2025-11-24T03:29:35.909Z"
+  "lastUpdated": "2025-11-24T03:32:47.569Z"
 }
