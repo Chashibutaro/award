@@ -42,8 +42,7 @@
     }
 
     .animate-slide-up {
-      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-      opacity: 0;
+      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     .animate-fade-in {
@@ -101,12 +100,15 @@
 
     .tab-btn {
       transition: all 0.3s;
+      border: 2px solid rgba(255, 255, 255, 0.5);
+      backdrop-filter: blur(5px);
     }
 
     .tab-btn.active {
       background: var(--tab-active-bg);
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      border-color: white;
       font-weight: 900;
       color: var(--accent-color);
     }
@@ -158,7 +160,7 @@
       class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 shadow-lg ring-2 ring-white/50 hover:scale-110 transition"></button>
   </div>
 
-  <div class="max-w-4xl w-full space-y-8">
+  <div class="w-full max-w-6xl mx-auto relative z-10">
 
     <!-- Header -->
     <header class="text-center animate-slide-up">
@@ -185,7 +187,6 @@
 
     <!-- Main Content Area -->
     <div class="relative min-h-[400px]">
-
       <!-- Morning Section -->
       <div id="section-morning"
         class="glass-card rounded-3xl p-6 md:p-10 animate-slide-up delay-200 absolute w-full transition-all duration-500">
@@ -535,7 +536,13 @@
 
     function render(data) {
       document.getElementById('display-date').textContent = data.date || '--/--';
-      document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+
+      if (data.lastUpdated) {
+        const date = new Date(data.lastUpdated);
+        document.getElementById('last-updated').textContent = date.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+      } else {
+        document.getElementById('last-updated').textContent = '--:--';
+      }
 
       ['morning', 'afternoon'].forEach(sec => {
         const container = document.getElementById(`container-${sec}`);

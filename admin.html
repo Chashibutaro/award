@@ -416,26 +416,6 @@
                         currentData[sectionId][field] = { name: '', value: '', comment: '' };
                     }
                 });
-                renderOutline();
-                autoSave();
-            }
-        }
-
-        function autoSave() {
-            localStorage.setItem('AWARD_DATA_V2', JSON.stringify(currentData));
-            const msg = document.getElementById('status-msg');
-            msg.textContent = '保存しました';
-            msg.classList.add('text-teal-600');
-            setTimeout(() => {
-                msg.textContent = '';
-                msg.classList.remove('text-teal-600');
-            }, 2000);
-        }
-
-        function archiveData() {
-            if (!currentData.date || currentData.date === '--/--') {
-                alert('日付が設定されていません。');
-                return;
             }
             if (!confirm(`${currentData.date} のデータをアーカイブ（履歴保存）しますか？`)) return;
 
