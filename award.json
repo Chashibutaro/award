@@ -15,7 +15,7 @@
       "screenshot": true
     }
   },
-  "date": "11/24",
+  "date": "11/25",
   "morning": {
     "processing": {
       "name": "テスト",
@@ -70,61 +70,6 @@
       "name": ""
     }
   },
-  "history": [
-    {
-      "date": "11/25",
-      "config": {
-        "labels": {
-          "processing": "処理数 1位",
-          "orders": "GM数 1位",
-          "sales": "売上 1位"
-        },
-        "theme": "default",
-        "visuals": {
-          "countUp": true,
-          "autoMode": true,
-          "confetti": true,
-          "liveBackground": true,
-          "comments": true,
-          "screenshot": true
-        }
-      },
-      "morning": {
-        "processing": {
-          "name": "テスト",
-          "value": "50",
-          "comment": ""
-        },
-        "orders": {
-          "name": "テスト",
-          "value": "16166",
-          "comment": ""
-        },
-        "sales": {
-          "name": "",
-          "value": "",
-          "comment": ""
-        }
-      },
-      "afternoon": {
-        "orders": {
-          "name": "",
-          "value": "",
-          "comment": ""
-        },
-        "processing": {
-          "name": "",
-          "value": "",
-          "comment": ""
-        },
-        "sales": {
-          "name": "",
-          "value": "",
-          "comment": ""
-        }
-      },
-      "fullday": {}
-    }
-  ],
-  "lastUpdated": "2025-11-24T03:28:30.637Z"
+  "history": [],
+  "lastUpdated": "2025-11-24T03:29:35.909Z"
 }
