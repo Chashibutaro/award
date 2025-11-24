@@ -42,7 +42,8 @@
     }
 
     .animate-slide-up {
-      animation: slideUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      opacity: 0;
     }
 
     .animate-fade-in {
@@ -100,15 +101,12 @@
 
     .tab-btn {
       transition: all 0.3s;
-      border: 2px solid rgba(255, 255, 255, 0.5);
-      backdrop-filter: blur(5px);
     }
 
     .tab-btn.active {
       background: var(--tab-active-bg);
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
       transform: scale(1.05);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      border-color: white;
       font-weight: 900;
       color: var(--accent-color);
     }
@@ -121,29 +119,6 @@
     .tab-btn:not(.active):hover {
       opacity: 1;
       transform: translateY(-2px);
-    }
-
-    /* Comment Style */
-    .comment-bubble {
-      position: relative;
-      background: rgba(255, 255, 255, 0.9);
-      border-radius: 12px;
-      padding: 8px 12px;
-      font-size: 0.85rem;
-      color: #475569;
-      margin-top: 12px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      border: 1px solid rgba(0, 0, 0, 0.05);
-    }
-
-    .comment-bubble::before {
-      content: '';
-      position: absolute;
-      top: -6px;
-      left: 20px;
-      border-width: 0 6px 6px;
-      border-style: solid;
-      border-color: transparent transparent rgba(255, 255, 255, 0.9) transparent;
     }
   </style>
 </head>
@@ -160,7 +135,7 @@
       class="w-8 h-8 rounded-full bg-gradient-to-br from-gray-700 to-gray-900 shadow-lg ring-2 ring-white/50 hover:scale-110 transition"></button>
   </div>
 
-  <div class="w-full max-w-6xl mx-auto relative z-10">
+  <div class="max-w-4xl w-full space-y-8">
 
     <!-- Header -->
     <header class="text-center animate-slide-up">
@@ -179,68 +154,106 @@
         class="tab-btn active px-8 py-3 rounded-full text-lg font-bold flex items-center gap-2">
         <span>☀️</span> 午前の部
       </button>
-      </path>
+      <button onclick="switchTab('afternoon')" id="tab-afternoon"
+        class="tab-btn px-8 py-3 rounded-full text-lg font-bold flex items-center gap-2">
+        <span>🌙</span> 午後の部
+      </button>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="relative min-h-[400px]">
+
+      <!-- Morning Section -->
+      <div id="section-morning"
+        class="glass-card rounded-3xl p-6 md:p-10 animate-slide-up delay-200 absolute w-full transition-all duration-500">
+        <div class="flex items-center gap-3 mb-8 border-b border-gray-200/30 pb-4">
+          <div class="p-3 rounded-2xl bg-orange-100 text-orange-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z">
+              </path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold">午前の部</h2>
+            <p class="text-sm opacity-70">Morning Session</p>
+          </div>
+        </div>
+        <div id="container-morning" class="space-y-4">
+          <!-- Content -->
+        </div>
+      </div>
+
+      <!-- Afternoon Section -->
+      <div id="section-afternoon"
+        class="glass-card rounded-3xl p-6 md:p-10 absolute w-full transition-all duration-500 opacity-0 translate-x-10 pointer-events-none">
+        <div class="flex items-center gap-3 mb-8 border-b border-gray-200/30 pb-4">
+          <div class="p-3 rounded-2xl bg-indigo-100 text-indigo-600">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z">
+              </path>
+            </svg>
+          </div>
+          <div>
+            <h2 class="text-3xl font-bold">午後の部</h2>
+            <p class="text-sm opacity-70">Afternoon Session</p>
+          </div>
+        </div>
+        <div id="container-afternoon" class="space-y-4">
+          <!-- Content -->
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center text-sm opacity-60 animate-fade-in delay-300 pt-8">
+      Last Updated: <span id="last-updated" class="font-mono">--:--</span>
+    </footer>
+
+    <!-- History Button -->
+    <button onclick="toggleHistory()"
+      class="fixed bottom-4 left-4 z-50 p-3 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md transition text-white shadow-lg"
+      title="過去の履歴">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+          d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
       </svg>
-    </div>
-    <div>
-      <h2 class="text-3xl font-bold">午後の部</h2>
-      <p class="text-sm opacity-70">Afternoon Session</p>
-    </div>
-  </div>
-  <div id="container-afternoon" class="space-y-4">
-    <!-- Content -->
-  </div>
-  </div>
-  </div>
+    </button>
 
-  <footer class="text-center text-sm opacity-60 animate-fade-in delay-300 pt-8">
-    Last Updated: <span id="last-updated" class="font-mono">--:--</span>
-  </footer>
-
-  <!-- History Button -->
-  <button onclick="toggleHistory()"
-    class="fixed bottom-4 left-4 z-50 p-3 rounded-full bg-white/20 hover:bg-white/40 backdrop-blur-md transition text-white shadow-lg"
-    title="過去の履歴">
-    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-    </svg>
-  </button>
-
-  <!-- History Modal -->
-  <div id="history-modal"
-    class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
-    <div
-      class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300"
-      id="history-content">
-      <div class="flex justify-between items-center mb-6">
-        <h3 class="text-2xl font-bold text-gray-800">過去の表彰履歴</h3>
-        <button onclick="toggleHistory()" class="text-gray-400 hover:text-gray-600">
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
-            </path>
-          </svg>
-        </button>
-      </div>
-      <div id="history-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
-        <!-- History items -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Winner Spotlight Modal -->
-  <div id="spotlight-modal" onclick="closeSpotlight()"
-    class="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-500 cursor-pointer">
-    <div class="text-center transform scale-50 transition-transform duration-500" id="spotlight-content">
-      <div class="text-2xl md:text-4xl font-bold text-white/80 mb-4 tracking-widest uppercase" id="spotlight-label">
-        LABEL</div>
-      <div class="text-6xl md:text-9xl font-black text-white mb-8 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]"
-        id="spotlight-name">NAME</div>
+    <!-- History Modal -->
+    <div id="history-modal"
+      class="fixed inset-0 z-[60] flex items-center justify-center bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-300">
       <div
-        class="text-4xl md:text-6xl font-eng font-bold text-[var(--accent-color)] bg-white/10 inline-block px-8 py-4 rounded-2xl backdrop-blur-xl border border-white/30"
-        id="spotlight-value">VALUE</div>
+        class="bg-white rounded-3xl p-8 max-w-md w-full mx-4 shadow-2xl transform scale-95 transition-transform duration-300"
+        id="history-content">
+        <div class="flex justify-between items-center mb-6">
+          <h3 class="text-2xl font-bold text-gray-800">過去の表彰履歴</h3>
+          <button onclick="toggleHistory()" class="text-gray-400 hover:text-gray-600">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12">
+              </path>
+            </svg>
+          </button>
+        </div>
+        <div id="history-list" class="space-y-3 max-h-[60vh] overflow-y-auto pr-2">
+          <!-- History items -->
+        </div>
+      </div>
     </div>
-  </div>
+
+    <!-- Winner Spotlight Modal -->
+    <div id="spotlight-modal" onclick="closeSpotlight()"
+      class="fixed inset-0 z-[70] flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0 pointer-events-none transition-opacity duration-500 cursor-pointer">
+      <div class="text-center transform scale-50 transition-transform duration-500" id="spotlight-content">
+        <div class="text-2xl md:text-4xl font-bold text-white/80 mb-4 tracking-widest uppercase" id="spotlight-label">
+          LABEL</div>
+        <div class="text-6xl md:text-9xl font-black text-white mb-8 drop-shadow-[0_0_30px_rgba(255,255,255,0.5)]"
+          id="spotlight-name">NAME</div>
+        <div
+          class="text-4xl md:text-6xl font-eng font-bold text-[var(--accent-color)] bg-white/10 inline-block px-8 py-4 rounded-2xl backdrop-blur-xl border border-white/30"
+          id="spotlight-value">VALUE</div>
+      </div>
+    </div>
   </div>
 
   <template id="card-template">
@@ -260,24 +273,20 @@
   <script>
     let config = {
       labels: { processing: '処理数', orders: '受注数', sales: '売上' },
-      theme: 'default',
-      visuals: {
-        countUp: false,
-        confetti: false,
-        comments: false
-      }
+      theme: 'default'
     };
     let fullData = null;
-    let confettiInterval = null;
 
     function setTheme(themeName) {
       document.documentElement.setAttribute('data-theme', themeName);
       if (themeName === 'default') document.documentElement.removeAttribute('data-theme');
 
-      // Trigger confetti on theme change if enabled
-      if (config.visuals && config.visuals.confetti) {
-        fireConfetti();
-      }
+      confetti({
+        particleCount: 50,
+        spread: 60,
+        origin: { y: 0.6 },
+        colors: themeName === 'dark' ? ['#818cf8', '#c084fc'] : ['#f97316', '#facc15']
+      });
     }
 
     function switchTab(tab) {
@@ -286,8 +295,6 @@
       const morningBtn = document.getElementById('tab-morning');
       const afternoonBtn = document.getElementById('tab-afternoon');
 
-      let activeContainerId = '';
-
       if (tab === 'morning') {
         setTheme('default');
         morningSec.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
@@ -295,30 +302,13 @@
 
         morningBtn.classList.add('active');
         afternoonBtn.classList.remove('active');
-        activeContainerId = 'container-morning';
       } else {
         setTheme('blue');
         afternoonSec.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
-        morningSec.classList.add('opacity-0', '-translate-x-10', 'pointer-events-none');
+        morningSec.classList.add('opacity-0', '-translate-x-10', 'pointer-events-none'); // Slide left
 
         afternoonBtn.classList.add('active');
         morningBtn.classList.remove('active');
-        activeContainerId = 'container-afternoon';
-      }
-
-      // Re-trigger countUp for the active tab
-      if (config.visuals && config.visuals.countUp) {
-        const container = document.getElementById(activeContainerId);
-        if (container) {
-          const valueFields = container.querySelectorAll('.value-field');
-          valueFields.forEach(el => {
-            const targetValue = el.getAttribute('data-value');
-            if (targetValue) {
-              el.textContent = '0'; // Reset to 0
-              countUp(el, targetValue);
-            }
-          });
-        }
       }
     }
 
@@ -341,9 +331,30 @@
       content.classList.remove('scale-50');
       content.classList.add('scale-100');
 
-      if (config.visuals && config.visuals.confetti) {
-        fireSideConfetti();
-      }
+      // Intense confetti
+      var duration = 3000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        confetti({
+          particleCount: 5,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: ['#ffffff', '#fbbf24']
+        });
+        confetti({
+          particleCount: 5,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: ['#ffffff', '#fbbf24']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
     }
 
     function closeSpotlight() {
@@ -358,11 +369,17 @@
     // History
     function toggleHistory() {
       const modal = document.getElementById('history-modal');
+      const content = document.getElementById('history-content');
+
       if (modal.classList.contains('opacity-0')) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
+        content.classList.remove('scale-95');
+        content.classList.add('scale-100');
         renderHistoryList();
       } else {
         modal.classList.add('opacity-0', 'pointer-events-none');
+        content.classList.remove('scale-100');
+        content.classList.add('scale-95');
       }
     }
 
@@ -371,111 +388,40 @@
       list.innerHTML = '';
 
       if (!fullData || !fullData.history || fullData.history.length === 0) {
-        list.innerHTML = '<p class="text-center text-gray-500 py-4">履歴はありません</p>';
+        list.innerHTML = '<div class="text-center text-gray-400 py-4">履歴はありません</div>';
         return;
       }
 
-      fullData.history.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition cursor-pointer';
-        div.onclick = () => loadHistoryItem(item);
-        div.innerHTML = `
-          <div class="flex justify-between items-center">
-            <span class="font-bold text-lg">${item.date}</span>
-            <span class="text-xs bg-gray-200 px-2 py-1 rounded text-gray-600">復元</span>
-          </div>
-        `;
-        list.appendChild(div);
-      });
-    }
-
-    function loadHistoryItem(item) {
-      if (!confirm(`${item.date} のデータを表示しますか？`)) return;
-      render(item);
-      toggleHistory();
-    }
-
-    // Visual Effects
-    function updateVisuals() {
-      if (!config.visuals) return;
-
-      // Confetti
-      if (confettiInterval) clearInterval(confettiInterval);
-      if (config.visuals.confetti) {
-        // Fire confetti occasionally
-        confettiInterval = setInterval(() => {
-          fireConfetti();
-        }, 15000);
-      }
-    }
-
-    function fireConfetti(opts = {}) {
-      confetti({
-        particleCount: opts.particleCount || 100,
-        spread: opts.spread || 70,
-        origin: opts.origin || { y: 0.6 },
-        colors: ['#f97316', '#facc15', '#0ea5e9', '#818cf8', '#ec4899']
-      });
-    }
-
-    function fireSideConfetti() {
-      const end = Date.now() + 1000;
-      const colors = ['#f97316', '#facc15', '#0ea5e9', '#818cf8', '#ec4899'];
-
-      (function frame() {
-        confetti({
-          particleCount: 2,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors: colors
-        });
-        confetti({
-          particleCount: 2,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors: colors
-        });
-
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      }());
-    }
-
-    function countUp(element, endValue) {
-      if (!config.visuals || !config.visuals.countUp) {
-        element.textContent = endValue;
-        return;
-      }
-
-      // Parse value (remove commas, etc if needed, but here we assume simple numbers or strings)
-      // If not a number, just show it
-      const num = parseInt(endValue.replace(/,/g, ''), 10);
-      if (isNaN(num)) {
-        element.textContent = endValue;
-        return;
-      }
-
-      let startTimestamp = null;
-      const duration = 1500;
-      const step = (timestamp) => {
-        if (!startTimestamp) startTimestamp = timestamp;
-        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-        const current = Math.floor(progress * num);
-        element.textContent = current.toLocaleString();
-        if (progress < 1) {
-          window.requestAnimationFrame(step);
-        } else {
-          element.textContent = endValue; // Ensure final value is exact
-        }
+      // Add "Current" option
+      const currentBtn = document.createElement('button');
+      currentBtn.className = 'w-full p-4 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-left transition flex justify-between items-center';
+      currentBtn.innerHTML = '<span>最新のデータ</span><span class="text-xs bg-blue-200 px-2 py-1 rounded">NOW</span>';
+      currentBtn.onclick = () => {
+        loadData(true); // Force reload current
+        toggleHistory();
       };
-      window.requestAnimationFrame(step);
+      list.appendChild(currentBtn);
+
+      fullData.history.forEach(record => {
+        const btn = document.createElement('button');
+        btn.className = 'w-full p-4 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-left transition';
+        btn.textContent = record.date;
+        btn.onclick = () => {
+          loadRecord(record);
+          toggleHistory();
+        };
+        list.appendChild(btn);
+      });
     }
 
-    // Data Loading & Rendering
-    async function loadData() {
+    function loadRecord(record) {
+      if (record.config) config = record.config;
+      render(record);
+      // Reset tab to morning
+      switchTab('morning');
+    }
+
+    async function loadData(force = false) {
       let data = null;
       try {
         const res = await fetch('award.json?t=' + new Date().getTime());
@@ -491,8 +437,6 @@
         fullData = data;
         if (data.config) config = data.config;
         if (config.theme) setTheme(config.theme);
-
-        updateVisuals(); // Apply visual settings
         render(data);
       }
     }
@@ -500,11 +444,12 @@
     function render(data) {
       document.getElementById('display-date').textContent = data.date || '--/--';
 
+      // Fix: Use data.lastUpdated if available, otherwise fallback to current time
       if (data.lastUpdated) {
         const date = new Date(data.lastUpdated);
         document.getElementById('last-updated').textContent = date.toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
       } else {
-        document.getElementById('last-updated').textContent = '--:--';
+        document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
       }
 
       ['morning', 'afternoon'].forEach(sec => {
@@ -522,28 +467,27 @@
           const template = document.getElementById('card-template').content.cloneNode(true);
           template.querySelector('.label-field').textContent = label;
           template.querySelector('.name-field').textContent = item.name || '-';
+          template.querySelector('.value-field').textContent = item.value || '-';
 
-          const valueEl = template.querySelector('.value-field');
-          valueEl.setAttribute('data-value', item.value || '-'); // Store for re-animation
-          // Count up animation
-          countUp(valueEl, item.value || '-');
-
-          // Comments
-          if (config.visuals && config.visuals.comments && item.comment) {
-            const commentDiv = document.createElement('div');
-            commentDiv.className = 'comment-bubble';
-            commentDiv.textContent = item.comment;
-            template.querySelector('div').appendChild(commentDiv); // Append to the first div (left side)
-          }
+          // Comment display logic (if needed in future, currently not in user code)
+          // if (config.visuals && config.visuals.comments && item.comment) { ... }
 
           container.appendChild(template);
         });
       });
     }
 
-    // Initial load
+    // Initial confetti
+    setTimeout(() => {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }, 500);
+
+    setInterval(loadData, 300000);
     loadData();
-    setInterval(loadData, 300000); // Reload every 5 mins
   </script>
 </body>
 
