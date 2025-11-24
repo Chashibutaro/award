@@ -15,12 +15,12 @@
       "screenshot": true
     }
   },
-  "date": "11/25",
+  "date": "11/24",
   "morning": {
     "processing": {
       "name": "テスト",
       "value": "50",
-      "comment": ""
+      "comment": "素晴らしい"
     },
     "orders": {
       "name": "テスト",
@@ -126,5 +126,5 @@
       "fullday": {}
     }
   ],
-  "lastUpdated": "2025-11-24T03:26:57.384Z"
+  "lastUpdated": "2025-11-24T03:28:30.637Z"
 }
