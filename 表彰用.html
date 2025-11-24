@@ -120,6 +120,29 @@
       opacity: 1;
       transform: translateY(-2px);
     }
+
+    /* Comment Style */
+    .comment-bubble {
+      position: relative;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 8px 12px;
+      font-size: 0.85rem;
+      color: #475569;
+      margin-top: 12px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+    }
+
+    .comment-bubble::before {
+      content: '';
+      position: absolute;
+      top: -6px;
+      left: 20px;
+      border-width: 0 6px 6px;
+      border-style: solid;
+      border-color: transparent transparent rgba(255, 255, 255, 0.9) transparent;
+    }
   </style>
 </head>
 
@@ -273,20 +296,24 @@
   <script>
     let config = {
       labels: { processing: '処理数', orders: '受注数', sales: '売上' },
-      theme: 'default'
+      theme: 'default',
+      visuals: {
+        countUp: false,
+        confetti: false,
+        comments: false
+      }
     };
     let fullData = null;
+    let confettiInterval = null;
 
     function setTheme(themeName) {
       document.documentElement.setAttribute('data-theme', themeName);
       if (themeName === 'default') document.documentElement.removeAttribute('data-theme');
 
-      confetti({
-        particleCount: 50,
-        spread: 60,
-        origin: { y: 0.6 },
-        colors: themeName === 'dark' ? ['#818cf8', '#c084fc'] : ['#f97316', '#facc15']
-      });
+      // Trigger confetti on theme change if enabled
+      if (config.visuals && config.visuals.confetti) {
+        fireConfetti();
+      }
     }
 
     function switchTab(tab) {
@@ -295,6 +322,8 @@
       const morningBtn = document.getElementById('tab-morning');
       const afternoonBtn = document.getElementById('tab-afternoon');
 
+      let activeContainerId = '';
+
       if (tab === 'morning') {
         setTheme('default');
         morningSec.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
@@ -302,13 +331,30 @@
 
         morningBtn.classList.add('active');
         afternoonBtn.classList.remove('active');
+        activeContainerId = 'container-morning';
       } else {
         setTheme('blue');
         afternoonSec.classList.remove('opacity-0', 'translate-x-10', 'pointer-events-none');
-        morningSec.classList.add('opacity-0', '-translate-x-10', 'pointer-events-none'); // Slide left
+        morningSec.classList.add('opacity-0', '-translate-x-10', 'pointer-events-none');
 
         afternoonBtn.classList.add('active');
         morningBtn.classList.remove('active');
+        activeContainerId = 'container-afternoon';
+      }
+
+      // Re-trigger countUp for the active tab
+      if (config.visuals && config.visuals.countUp) {
+        const container = document.getElementById(activeContainerId);
+        if (container) {
+          const valueFields = container.querySelectorAll('.value-field');
+          valueFields.forEach(el => {
+            const targetValue = el.getAttribute('data-value');
+            if (targetValue) {
+              el.textContent = '0'; // Reset to 0
+              countUp(el, targetValue);
+            }
+          });
+        }
       }
     }
 
@@ -331,30 +377,9 @@
       content.classList.remove('scale-50');
       content.classList.add('scale-100');
 
-      // Intense confetti
-      var duration = 3000;
-      var end = Date.now() + duration;
-
-      (function frame() {
-        confetti({
-          particleCount: 5,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0 },
-          colors: ['#ffffff', '#fbbf24']
-        });
-        confetti({
-          particleCount: 5,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1 },
-          colors: ['#ffffff', '#fbbf24']
-        });
-
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      }());
+      if (config.visuals && config.visuals.confetti) {
+        fireSideConfetti();
+      }
     }
 
     function closeSpotlight() {
@@ -369,17 +394,11 @@
     // History
     function toggleHistory() {
       const modal = document.getElementById('history-modal');
-      const content = document.getElementById('history-content');
-
       if (modal.classList.contains('opacity-0')) {
         modal.classList.remove('opacity-0', 'pointer-events-none');
-        content.classList.remove('scale-95');
-        content.classList.add('scale-100');
         renderHistoryList();
       } else {
         modal.classList.add('opacity-0', 'pointer-events-none');
-        content.classList.remove('scale-100');
-        content.classList.add('scale-95');
       }
     }
 
@@ -388,40 +407,111 @@
       list.innerHTML = '';
 
       if (!fullData || !fullData.history || fullData.history.length === 0) {
-        list.innerHTML = '<div class="text-center text-gray-400 py-4">履歴はありません</div>';
+        list.innerHTML = '<p class="text-center text-gray-500 py-4">履歴はありません</p>';
         return;
       }
 
-      // Add "Current" option
-      const currentBtn = document.createElement('button');
-      currentBtn.className = 'w-full p-4 rounded-xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-left transition flex justify-between items-center';
-      currentBtn.innerHTML = '<span>最新のデータ</span><span class="text-xs bg-blue-200 px-2 py-1 rounded">NOW</span>';
-      currentBtn.onclick = () => {
-        loadData(true); // Force reload current
-        toggleHistory();
-      };
-      list.appendChild(currentBtn);
-
-      fullData.history.forEach(record => {
-        const btn = document.createElement('button');
-        btn.className = 'w-full p-4 rounded-xl bg-gray-50 hover:bg-gray-100 text-gray-700 font-bold text-left transition';
-        btn.textContent = record.date;
-        btn.onclick = () => {
-          loadRecord(record);
-          toggleHistory();
-        };
-        list.appendChild(btn);
+      fullData.history.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'p-4 bg-gray-50 rounded-xl border border-gray-200 hover:bg-gray-100 transition cursor-pointer';
+        div.onclick = () => loadHistoryItem(item);
+        div.innerHTML = `
+          <div class="flex justify-between items-center">
+            <span class="font-bold text-lg">${item.date}</span>
+            <span class="text-xs bg-gray-200 px-2 py-1 rounded text-gray-600">復元</span>
+          </div>
+        `;
+        list.appendChild(div);
       });
     }
 
-    function loadRecord(record) {
-      if (record.config) config = record.config;
-      render(record);
-      // Reset tab to morning
-      switchTab('morning');
+    function loadHistoryItem(item) {
+      if (!confirm(`${item.date} のデータを表示しますか？`)) return;
+      render(item);
+      toggleHistory();
     }
 
-    async function loadData(force = false) {
+    // Visual Effects
+    function updateVisuals() {
+      if (!config.visuals) return;
+
+      // Confetti
+      if (confettiInterval) clearInterval(confettiInterval);
+      if (config.visuals.confetti) {
+        // Fire confetti occasionally
+        confettiInterval = setInterval(() => {
+          fireConfetti();
+        }, 15000);
+      }
+    }
+
+    function fireConfetti(opts = {}) {
+      confetti({
+        particleCount: opts.particleCount || 100,
+        spread: opts.spread || 70,
+        origin: opts.origin || { y: 0.6 },
+        colors: ['#f97316', '#facc15', '#0ea5e9', '#818cf8', '#ec4899']
+      });
+    }
+
+    function fireSideConfetti() {
+      const end = Date.now() + 1000;
+      const colors = ['#f97316', '#facc15', '#0ea5e9', '#818cf8', '#ec4899'];
+
+      (function frame() {
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0 },
+          colors: colors
+        });
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1 },
+          colors: colors
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }
+
+    function countUp(element, endValue) {
+      if (!config.visuals || !config.visuals.countUp) {
+        element.textContent = endValue;
+        return;
+      }
+
+      // Parse value (remove commas, etc if needed, but here we assume simple numbers or strings)
+      // If not a number, just show it
+      const num = parseInt(endValue.replace(/,/g, ''), 10);
+      if (isNaN(num)) {
+        element.textContent = endValue;
+        return;
+      }
+
+      let startTimestamp = null;
+      const duration = 1500;
+      const step = (timestamp) => {
+        if (!startTimestamp) startTimestamp = timestamp;
+        const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+        const current = Math.floor(progress * num);
+        element.textContent = current.toLocaleString();
+        if (progress < 1) {
+          window.requestAnimationFrame(step);
+        } else {
+          element.textContent = endValue; // Ensure final value is exact
+        }
+      };
+      window.requestAnimationFrame(step);
+    }
+
+    // Data Loading & Rendering
+    async function loadData() {
       let data = null;
       try {
         const res = await fetch('award.json?t=' + new Date().getTime());
@@ -437,6 +527,8 @@
         fullData = data;
         if (data.config) config = data.config;
         if (config.theme) setTheme(config.theme);
+
+        updateVisuals(); // Apply visual settings
         render(data);
       }
     }
@@ -460,24 +552,28 @@
           const template = document.getElementById('card-template').content.cloneNode(true);
           template.querySelector('.label-field').textContent = label;
           template.querySelector('.name-field').textContent = item.name || '-';
-          template.querySelector('.value-field').textContent = item.value || '-';
+
+          const valueEl = template.querySelector('.value-field');
+          valueEl.setAttribute('data-value', item.value || '-'); // Store for re-animation
+          // Count up animation
+          countUp(valueEl, item.value || '-');
+
+          // Comments
+          if (config.visuals && config.visuals.comments && item.comment) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-bubble';
+            commentDiv.textContent = item.comment;
+            template.querySelector('div').appendChild(commentDiv); // Append to the first div (left side)
+          }
 
           container.appendChild(template);
         });
       });
     }
 
-    // Initial confetti
-    setTimeout(() => {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
-      });
-    }, 500);
-
-    setInterval(loadData, 300000);
+    // Initial load
     loadData();
+    setInterval(loadData, 300000); // Reload every 5 mins
   </script>
 </body>
 

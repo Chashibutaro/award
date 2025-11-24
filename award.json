@@ -5,56 +5,53 @@
       "orders": "GM数 1位",
       "sales": "売上 1位"
     },
-    "theme": "default"
+    "theme": "default",
+    "visuals": {
+      "countUp": true,
+      "autoMode": false,
+      "confetti": true,
+      "liveBackground": true,
+      "comments": true,
+      "screenshot": true
+    }
   },
   "date": "11/24",
   "morning": {
     "processing": {
       "name": "11/24",
-      "value": "11/24"
+      "value": "11/24",
+      "comment": ""
     },
     "orders": {
       "name": "11/24",
-      "value": "11/24"
+      "value": "11/24",
+      "comment": ""
     },
     "sales": {
       "name": "11/24",
-      "value": "11/24"
+      "value": "11/24",
+      "comment": ""
     }
   },
   "afternoon": {
     "orders": {
       "name": "11/24",
-      "value": "11/24"
+      "value": "11/24",
+      "comment": ""
     },
     "processing": {
       "name": "11/24",
-      "value": "11/24"
+      "value": "11/24",
+      "comment": ""
     },
     "sales": {
       "name": "11/24",
-      "value": "11/24"
+      "value": "11/24",
+      "comment": ""
     }
   },
   "fullday": {},
-  "current": {
-    "processing": {
-      "name": "砂糖",
-      "value": "14"
-    },
-    "orders": {
-      "name": "-",
-      "value": "-"
-    },
-    "sales": {
-      "value": "-",
-      "name": "-"
-    }
-  },
-  "today_summary": {
-    "processing": {
-      "name": ""
-    }
-  },
+  "current": {},
+  "today_summary": {},
   "history": []
 }

@@ -67,7 +67,12 @@
                 </button>
                 <a href="./表彰用.html" target="_blank"
                     class="px-5 py-2.5 bg-white/80 hover:bg-white border border-slate-200 rounded-xl text-slate-600 font-bold shadow-sm transition flex items-center gap-2">
-                    一時保存 (Local)
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14">
+                        </path>
+                    </svg>
+                    表彰画面を開く
                 </a>
             </div>
         </header>
@@ -86,7 +91,8 @@
                                     d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z">
                                 </path>
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    d="M15 12a3 3 0 11-6 0 3 3 0 016 0z">
+                                </path>
                             </svg>
                             項目名設定
                         </h2>
@@ -113,427 +119,329 @@
                     </div>
                 </div>
 
-                <!-- Data Editor -->
-                <div class="glass-panel rounded-2xl overflow-hidden min-h-[400px]">
+                <!-- Visual Settings Panel -->
+                <div class="glass-panel rounded-2xl overflow-hidden">
                     <div class="px-6 py-4 bg-slate-50/50 border-b border-slate-100 flex justify-between items-center">
                         <h2 class="font-bold text-slate-700 flex items-center gap-2">
-                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <svg class="w-5 h-5 text-pink-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z">
+                                    d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
                                 </path>
                             </svg>
-                            データ編集
+                            演出設定
                         </h2>
-                        <div
-                            class="flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200 shadow-sm">
-                            <span class="text-xs font-bold text-slate-400">DATE</span>
-                            <span id="date-display" class="editable font-mono font-bold text-lg text-blue-600 px-2"
-                                contenteditable="true">--/--</span>
-                        </div>
                     </div>
-                    <div id="outline-container" class="p-6 space-y-4">
-                        <!-- Generated Content -->
-                    </div>
-                </div>
-            </div>
+                    <div class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label
+                            class="flex items-center gap-3 p-3 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="checkbox" id="visual-countUp" onchange="updateConfig()"
+                                class="w-5 h-5 text-blue-600 rounded focus:ring-blue-500">
+                            <span class="font-bold text-slate-700">カウントアップ演出</span>
+                        </label>
+                        const container = document.getElementById('outline-container');
+                        container.innerHTML = '';
 
-            <!-- Sidebar: GitHub Settings -->
-            <div class="lg:col-span-4 space-y-6">
-                <div class="glass-panel rounded-2xl p-6 sticky top-6">
-                    <h3 class="font-bold text-slate-800 mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-teal-600" fill="currentColor" viewBox="0 0 24 24">
-                            <path
-                                d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                        </svg>
-                        公開設定 (GitHub)
-                    </h3>
-                    <p class="text-xs text-slate-500 mb-6 leading-relaxed">
-                        設定はブラウザに自動保存されます。<br>次回から入力不要です。
-                    </p>
-
-                    <div class="space-y-4 mb-6">
-                        <div class="relative">
-                            <label
-                                class="absolute -top-2 left-2 bg-white px-1 text-[10px] font-bold text-slate-400">OWNER</label>
-                            <input id="gh-owner" type="text"
-                                class="w-full text-sm border-slate-200 rounded-lg shadow-sm focus:border-teal-500 focus:ring-teal-500 pt-3 pb-2 px-3 transition">
-                        </div>
-                        <div class="relative">
-                            <label
-                                class="absolute -top-2 left-2 bg-white px-1 text-[10px] font-bold text-slate-400">REPOSITORY</label>
-                            <input id="gh-repo" type="text"
-                                class="w-full text-sm border-slate-200 rounded-lg shadow-sm focus:border-teal-500 focus:ring-teal-500 pt-3 pb-2 px-3 transition">
-                        </div>
-                        <div class="relative">
-                            <label
-                                class="absolute -top-2 left-2 bg-white px-1 text-[10px] font-bold text-slate-400">TOKEN</label>
-                            <input id="gh-token" type="password"
-                                class="w-full text-sm border-slate-200 rounded-lg shadow-sm focus:border-teal-500 focus:ring-teal-500 pt-3 pb-2 px-3 transition">
-                        </div>
-                    </div>
-
-                    <button onclick="saveToGitHub()"
-                        class="w-full py-3 bg-teal-600 text-white rounded-xl hover:bg-teal-700 shadow-lg shadow-teal-200 font-bold transition transform active:scale-95 flex justify-center items-center gap-2">
-                        <span>公開する</span>
-                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-                        </svg>
-                    </button>
-                    <p id="status-msg" class="text-xs text-center mt-3 text-slate-500 font-medium h-4"></p>
-                </div>
-
-                <!-- History Management -->
-                <div class="glass-panel rounded-2xl p-6 mt-6">
-                    <h3 class="font-bold text-slate-800 mb-1 flex items-center gap-2">
-                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        履歴管理
-                    </h3>
-                    <p class="text-xs text-slate-500 mb-4 leading-relaxed">
-                        アーカイブされた履歴データを管理できます。
-                    </p>
-
-                    <div id="history-container" class="space-y-2 max-h-80 overflow-y-auto">
-                        <!-- History items will be rendered here -->
-                    </div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <script>
-        const SECTIONS = [
-            { id: 'morning', label: '午前の部' },
-            { id: 'afternoon', label: '午後の部' }
-        ];
-        const FIELDS = ['processing', 'orders', 'sales'];
-
-        let currentData = {
-            config: {
-                labels: { processing: '処理数 1位', orders: '受注数 1位', sales: '売上 1位' },
-                theme: 'default'
-            },
-            date: "--/--",
-            morning: {}, afternoon: {}, fullday: {}, current: {}, today_summary: {}, history: []
-        };
-
-        async function init() {
-            // 1. Load Data
-            const local = localStorage.getItem('AWARD_DATA_V2');
-            if (local) {
-                try {
-                    const parsed = JSON.parse(local);
-                    currentData = { ...currentData, ...parsed };
-                    if (!currentData.config) {
-                        currentData.config = {
-                            labels: { processing: '処理数 1位', orders: '受注数 1位', sales: '売上 1位' },
-                            theme: 'default'
+                        document.getElementById('date-display').textContent = currentData.date || '--/--';
+                        document.getElementById('date-display').onblur = (e) => {
+                        currentData.date = e.target.textContent.trim();
+                        autoSave();
                         };
-                    }
-                } catch (e) { console.error(e); }
-            } else {
-                try {
-                    const res = await fetch('award.json');
-                    if (res.ok) {
-                        const json = await res.json();
-                        currentData = { ...currentData, ...json };
-                    }
-                } catch (e) { }
-            }
 
-            // 2. Render
-            renderConfig();
-            renderOutline();
+                        SECTIONS.forEach(section => {
+                        const sectionData = currentData[section.id] || {};
 
-            // 3. Restore GitHub Settings (including Token)
-            restoreGitHubSettings();
+                        const details = document.createElement('details');
+                        details.open = true;
+                        details.className = 'group bg-white rounded-xl border border-slate-100 shadow-sm mb-4
+                        overflow-hidden';
 
-            // 4. Render History
-            renderHistory();
-        }
+                        const summary = document.createElement('summary');
+                        summary.className = 'cursor-pointer p-4 bg-slate-50/50 hover:bg-slate-100/80 font-bold
+                        text-slate-700 flex items-center justify-between select-none transition';
+                        summary.innerHTML = `
+                        <div class="flex items-center">
+                            <span class="arrow mr-3 text-slate-400 bg-white rounded-full p-1 shadow-sm">
+                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 5l7 7-7 7"></path>
+                                </svg>
+                            </span>
+                            ${section.label}
+                        </div>
+                        <button onclick="clearSection('${section.id}', event)"
+                            class="text-xs bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 2 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            クリア
+                        </button>
+                        `;
+                        details.appendChild(summary);
 
-        function renderConfig() {
-            document.getElementById('label-processing').value = currentData.config.labels.processing;
-            document.getElementById('label-orders').value = currentData.config.labels.orders;
-            document.getElementById('label-sales').value = currentData.config.labels.sales;
-        }
+                        const content = document.createElement('div');
+                        content.className = 'p-5 space-y-4 border-t border-slate-100';
 
-        function updateConfig() {
-            currentData.config.labels.processing = document.getElementById('label-processing').value;
-            currentData.config.labels.orders = document.getElementById('label-orders').value;
-            currentData.config.labels.sales = document.getElementById('label-sales').value;
-            renderOutline();
-            autoSave();
-        }
+                        FIELDS.forEach(fieldId => {
+                        const fieldData = sectionData[fieldId] || { name: '', value: '', comment: '' };
+                        const label = currentData.config.labels[fieldId] || fieldId;
 
-        function renderOutline() {
-            const container = document.getElementById('outline-container');
-            container.innerHTML = '';
+                        const row = document.createElement('div');
+                        row.className = 'grid grid-cols-1 md:grid-cols-3 gap-4 items-center text-sm';
 
-            document.getElementById('date-display').textContent = currentData.date || '--/--';
-            document.getElementById('date-display').onblur = (e) => {
-                currentData.date = e.target.textContent.trim();
-                autoSave();
-            };
-
-            SECTIONS.forEach(section => {
-                const sectionData = currentData[section.id] || {};
-
-                const details = document.createElement('details');
-                details.open = true;
-                details.className = 'group bg-white rounded-xl border border-slate-100 shadow-sm mb-4 overflow-hidden';
-
-                const summary = document.createElement('summary');
-                summary.className = 'cursor-pointer p-4 bg-slate-50/50 hover:bg-slate-100/80 font-bold text-slate-700 flex items-center justify-between select-none transition';
-                summary.innerHTML = `
-                    <div class="flex items-center">
-                        <span class="arrow mr-3 text-slate-400 bg-white rounded-full p-1 shadow-sm">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
-                        </span>
-                        ${section.label}
-                    </div>
-                    <button onclick="clearSection('${section.id}', event)" 
-                        class="text-xs bg-white border border-slate-200 text-slate-400 hover:text-red-500 hover:border-red-200 px-3 py-1.5 rounded-lg transition shadow-sm flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        クリア
-                    </button>
-                `;
-                details.appendChild(summary);
-
-                const content = document.createElement('div');
-                content.className = 'p-5 space-y-4 border-t border-slate-100';
-
-                FIELDS.forEach(fieldId => {
-                    const fieldData = sectionData[fieldId] || { name: '', value: '' };
-                    const label = currentData.config.labels[fieldId] || fieldId;
-
-                    const row = document.createElement('div');
-                    row.className = 'flex items-center gap-4 text-sm';
-
-                    row.innerHTML = `
-                        <div class="w-28 font-bold text-slate-400 text-right flex-shrink-0 text-xs uppercase tracking-wider pt-2">${label}</div>
+                        row.innerHTML = `
+                        <div
+                            class="w-full font-bold text-slate-400 text-left md:text-right flex-shrink-0 text-xs uppercase tracking-wider pt-2">
+                            ${label}</div>
                         <div class="flex-1 grid grid-cols-2 gap-3">
                             <div class="relative group/input">
-                                <span class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">NAME</span>
-                                <div class="editable p-2.5 text-slate-700 font-medium" contenteditable="true" 
-                                     data-section="${section.id}" data-field="${fieldId}" data-key="name">
-                                     ${fieldData.name || ''}
+                                <span
+                                    class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">NAME</span>
+                                <div class="editable p-2.5 text-slate-700 font-medium" contenteditable="true"
+                                    data-section="${section.id}" data-field="${fieldId}" data-key="name">
+                                    ${fieldData.name || ''}
                                 </div>
                             </div>
                             <div class="relative group/input">
-                                <span class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">VALUE</span>
-                                <div class="editable p-2.5 text-right font-mono font-bold text-slate-700" contenteditable="true"
-                                     data-section="${section.id}" data-field="${fieldId}" data-key="value">
-                                     ${fieldData.value || ''}
+                                <span
+                                    class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">VALUE</span>
+                                <div class="editable p-2.5 text-right font-mono font-bold text-slate-700"
+                                    contenteditable="true" data-section="${section.id}" data-field="${fieldId}"
+                                    data-key="value">
+                                    ${fieldData.value || ''}
                                 </div>
                             </div>
                         </div>
-                    `;
-                    content.appendChild(row);
-                });
+                        <div class="relative group/input">
+                            <span
+                                class="absolute -top-2 left-2 text-[10px] font-bold text-slate-300 bg-white px-1">COMMENT</span>
+                            <div class="editable p-2.5 text-sm text-slate-600 min-h-[40px]" contenteditable="true"
+                                data-section="${section.id}" data-field="${fieldId}" data-key="comment">
+                                ${fieldData.comment || ''}
+                            </div>
+                        </div>
+                        `;
+                        content.appendChild(row);
+                        });
 
-                details.appendChild(content);
-                container.appendChild(details);
-            });
+                        details.appendChild(content);
+                        container.appendChild(details);
+                        });
 
-            document.querySelectorAll('.editable').forEach(el => {
-                el.addEventListener('blur', (e) => {
-                    const section = e.target.dataset.section;
-                    const field = e.target.dataset.field;
-                    const key = e.target.dataset.key;
+                        document.querySelectorAll('.editable').forEach(el => {
+                        el.addEventListener('blur', (e) => {
+                        const section = e.target.dataset.section;
+                        const field = e.target.dataset.field;
+                        const key = e.target.dataset.key;
 
-                    if (section && field && key) {
+                        if (section && field && key) {
                         if (!currentData[section]) currentData[section] = {};
                         if (!currentData[section][field]) currentData[section][field] = {};
                         currentData[section][field][key] = e.target.textContent.trim();
                         autoSave();
-                    }
-                });
-            });
-        }
+                        }
+                        });
+                        });
+                        }
 
-        function clearSection(sectionId, event) {
-            event.preventDefault();
-            event.stopPropagation();
+                        function clearSection(sectionId, event) {
+                        event.stopPropagation();
+                        if (!confirm('このセクションをクリアしますか？')) return;
 
-            const label = SECTIONS.find(s => s.id === sectionId)?.label || sectionId;
-            if (!confirm(`${label} の入力内容をすべてクリアしますか？`)) return;
+                        if (currentData[sectionId]) {
+                        FIELDS.forEach(field => {
+                        if (currentData[sectionId][field]) {
+                        currentData[sectionId][field] = { name: '', value: '', comment: '' };
+                        }
+                        });
+                        renderOutline();
+                        autoSave();
+                        }
+                        }
 
-            if (currentData[sectionId]) {
-                FIELDS.forEach(field => {
-                    if (currentData[sectionId][field]) {
-                        currentData[sectionId][field].name = '';
-                        currentData[sectionId][field].value = '';
-                    }
-                });
-                renderOutline();
-                autoSave();
-            }
-        }
+                        function autoSave() {
+                        localStorage.setItem('AWARD_DATA_V2', JSON.stringify(currentData));
+                        const msg = document.getElementById('status-msg');
+                        msg.textContent = '保存しました';
+                        msg.classList.add('text-teal-600');
+                        setTimeout(() => {
+                        msg.textContent = '';
+                        msg.classList.remove('text-teal-600');
+                        }, 2000);
+                        }
 
-        function autoSave() {
-            localStorage.setItem('AWARD_DATA_V2', JSON.stringify(currentData));
-            const msg = document.getElementById('status-msg');
-            msg.textContent = '保存しました';
-            msg.classList.add('text-teal-600');
-            setTimeout(() => {
-                msg.textContent = '';
-                msg.classList.remove('text-teal-600');
-            }, 2000);
-        }
+                        function archiveData() {
+                        if (!currentData.date || currentData.date === '--/--') {
+                        alert('日付が設定されていません。');
+                        return;
+                        }
+                        if (!confirm(`${currentData.date} のデータをアーカイブ（履歴保存）しますか？`)) return;
 
-        function archiveData() {
-            if (!currentData.date || currentData.date === '--/--') {
-                alert('日付が設定されていません。');
-                return;
-            }
-            if (!confirm(`${currentData.date} のデータをアーカイブ（履歴保存）しますか？`)) return;
+                        if (!currentData.history) currentData.history = [];
 
-            if (!currentData.history) currentData.history = [];
+                        const existingIndex = currentData.history.findIndex(h => h.date === currentData.date);
 
-            const existingIndex = currentData.history.findIndex(h => h.date === currentData.date);
+                        const record = JSON.parse(JSON.stringify({
+                        date: currentData.date,
+                        config: currentData.config,
+                        morning: currentData.morning,
+                        afternoon: currentData.afternoon,
+                        fullday: currentData.fullday
+                        }));
 
-            const record = JSON.parse(JSON.stringify({
-                date: currentData.date,
-                config: currentData.config,
-                morning: currentData.morning,
-                afternoon: currentData.afternoon,
-                fullday: currentData.fullday
-            }));
+                        if (existingIndex >= 0) {
+                        currentData.history[existingIndex] = record;
+                        alert('既存の履歴を上書きしました。');
+                        } else {
+                        currentData.history.unshift(record);
+                        alert('履歴に追加しました。');
+                        }
+                        autoSave();
+                        renderHistory();
+                        }
 
-            if (existingIndex >= 0) {
-                currentData.history[existingIndex] = record;
-                alert('既存の履歴を上書きしました。');
-            } else {
-                currentData.history.unshift(record);
-                alert('履歴に追加しました。');
-            }
-            autoSave();
-            renderHistory();
-        }
+                        function renderHistory() {
+                        const container = document.getElementById('history-container');
+                        if (!container) return;
 
-        function renderHistory() {
-            const container = document.getElementById('history-container');
-            if (!container) return;
+                        if (!currentData.history || currentData.history.length === 0) {
+                        container.innerHTML = '<p class="text-sm text-slate-400 text-center py-4">履歴データがありません</p>';
+                        return;
+                        }
 
-            if (!currentData.history || currentData.history.length === 0) {
-                container.innerHTML = '<p class="text-sm text-slate-400 text-center py-4">履歴データがありません</p>';
-                return;
-            }
+                        container.innerHTML = '';
+                        currentData.history.forEach((item, index) => {
+                        const div = document.createElement('div');
+                        div.className = 'flex items-center justify-between p-3 bg-white rounded-lg border
+                        border-slate-200 hover:border-purple-300 transition group';
+                        div.innerHTML = `
+                        <div class="flex items-center gap-3">
+                            <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                            <span class="font-mono font-bold text-slate-700">${item.date}</span>
+                        </div>
+                        <button onclick="deleteHistoryItem(${index})"
+                            class="opacity-0 group-hover:opacity-100 text-xs bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 px-2 py-1 rounded transition flex items-center gap-1">
+                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 2 0 00-1 1v3M4 7h16">
+                                </path>
+                            </svg>
+                            削除
+                        </button>
+                        `;
+                        container.appendChild(div);
+                        });
+                        }
 
-            container.innerHTML = '';
-            currentData.history.forEach((item, index) => {
-                const div = document.createElement('div');
-                div.className = 'flex items-center justify-between p-3 bg-white rounded-lg border border-slate-200 hover:border-purple-300 transition group';
-                div.innerHTML = `
-                    <div class="flex items-center gap-3">
-                        <svg class="w-4 h-4 text-purple-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
-                        </svg>
-                        <span class="font-mono font-bold text-slate-700">${item.date}</span>
-                    </div>
-                    <button onclick="deleteHistoryItem(${index})" 
-                        class="opacity-0 group-hover:opacity-100 text-xs bg-red-50 border border-red-200 text-red-600 hover:bg-red-100 px-2 py-1 rounded transition flex items-center gap-1">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
-                        削除
-                    </button>
-                `;
-                container.appendChild(div);
-            });
-        }
+                        function deleteHistoryItem(index) {
+                        if (!currentData.history || index < 0 || index>= currentData.history.length) return;
 
-        function deleteHistoryItem(index) {
-            if (!currentData.history || index < 0 || index >= currentData.history.length) return;
+                            const item = currentData.history[index];
+                            if (!confirm(`${item.date} の履歴データを削除しますか？\nこの操作は取り消せません。`)) return;
 
-            const item = currentData.history[index];
-            if (!confirm(`${item.date} の履歴データを削除しますか？\nこの操作は取り消せません。`)) return;
+                            currentData.history.splice(index, 1);
+                            autoSave();
+                            renderHistory();
+                            }
 
-            currentData.history.splice(index, 1);
-            autoSave();
-            renderHistory();
-        }
+                            function restoreGitHubSettings() {
+                            const owner = localStorage.getItem('GH_OWNER');
+                            const repo = localStorage.getItem('GH_REPO');
+                            const token = localStorage.getItem('GH_TOKEN');
 
-        function restoreGitHubSettings() {
-            const settings = JSON.parse(localStorage.getItem('GH_SETTINGS_V2') || '{}');
-            if (settings.owner) document.getElementById('gh-owner').value = settings.owner;
-            if (settings.repo) document.getElementById('gh-repo').value = settings.repo;
-            if (settings.token) document.getElementById('gh-token').value = settings.token;
-        }
+                            if (owner) document.getElementById('gh-owner').value = owner;
+                            if (repo) document.getElementById('gh-repo').value = repo;
+                            if (token) document.getElementById('gh-token').value = token;
+                            }
 
-        function saveGitHubSettings() {
-            const owner = document.getElementById('gh-owner').value.trim();
-            const repo = document.getElementById('gh-repo').value.trim();
-            const token = document.getElementById('gh-token').value.trim();
-            localStorage.setItem('GH_SETTINGS_V2', JSON.stringify({ owner, repo, token }));
-            return { owner, repo, token };
-        }
+                            function saveGitHubSettings() {
+                            const owner = document.getElementById('gh-owner').value;
+                            const repo = document.getElementById('gh-repo').value;
+                            const token = document.getElementById('gh-token').value;
 
-        async function saveToGitHub() {
-            const { owner, repo, token } = saveGitHubSettings();
-            if (!owner || !repo || !token) {
-                alert('GitHub設定（Owner, Repo, Token）を入力してください');
-                return;
-            }
+                            localStorage.setItem('GH_OWNER', owner);
+                            localStorage.setItem('GH_REPO', repo);
+                            localStorage.setItem('GH_TOKEN', token);
+                            }
 
-            const btn = document.querySelector('button[onclick="saveToGitHub()"]');
-            const originalHTML = btn.innerHTML;
-            btn.innerHTML = '<span>送信中...</span>';
-            btn.disabled = true;
-            btn.classList.add('opacity-50', 'cursor-not-allowed');
+                            async function saveToGitHub() {
+                            saveGitHubSettings();
+                            const owner = document.getElementById('gh-owner').value;
+                            const repo = document.getElementById('gh-repo').value;
+                            const token = document.getElementById('gh-token').value;
+                            const msg = document.getElementById('status-msg');
 
-            try {
-                const url = `https://api.github.com/repos/${owner}/${repo}/contents/award.json`;
-                const headers = {
-                    'Authorization': `token ${token}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                };
+                            if (!owner || !repo || !token) {
+                            alert('GitHub設定（Owner, Repo, Token）をすべて入力してください');
+                            return;
+                            }
 
-                let sha = null;
-                try {
-                    const getRes = await fetch(url, { headers });
-                    if (getRes.ok) {
-                        const data = await getRes.json();
-                        sha = data.sha;
-                    }
-                } catch (e) { }
+                            msg.textContent = 'GitHubへ保存中...';
+                            msg.className = 'text-xs text-center mt-3 text-blue-500 font-bold h-4';
 
-                const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
+                            // Prepare content (Base64)
+                            const content = btoa(unescape(encodeURIComponent(JSON.stringify(currentData, null, 2))));
+                            const path = 'award.json';
+                            const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
 
-                const putRes = await fetch(url, {
-                    method: 'PUT',
-                    headers: { ...headers, 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        message: `Update award data ${currentData.date}`,
-                        content: content,
-                        sha: sha
-                    })
-                });
+                            try {
+                            // 1. Get SHA
+                            let sha = null;
+                            const getRes = await fetch(url, {
+                            headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json'
+                            }
+                            });
+                            if (getRes.ok) {
+                            const getData = await getRes.json();
+                            sha = getData.sha;
+                            }
 
-                if (putRes.ok) {
-                    alert('公開しました！反映まで数分かかります。');
-                } else {
-                    const err = await putRes.json();
-                    alert('エラーが発生しました: ' + (err.message || 'Unknown error'));
-                }
-            } catch (e) {
-                alert('通信エラー: ' + e.message);
-            } finally {
-                btn.innerHTML = originalHTML;
-                btn.disabled = false;
-                btn.classList.remove('opacity-50', 'cursor-not-allowed');
-            }
-        }
+                            // 2. Put File
+                            const body = {
+                            message: `Update award data: ${currentData.date}`,
+                            content: content
+                            };
+                            if (sha) body.sha = sha;
 
-        ['gh-owner', 'gh-repo', 'gh-token'].forEach(id => {
-            document.getElementById(id).addEventListener('change', saveGitHubSettings);
-        });
+                            const putRes = await fetch(url, {
+                            method: 'PUT',
+                            headers: {
+                            'Authorization': `token ${token}`,
+                            'Accept': 'application/vnd.github.v3+json',
+                            'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(body)
+                            });
 
-        init();
-    </script>
+                            if (putRes.ok) {
+                            msg.textContent = 'GitHubへの公開完了！';
+                            msg.className = 'text-xs text-center mt-3 text-teal-600 font-bold h-4';
+                            setTimeout(() => { msg.textContent = ''; }, 3000);
+                            } else {
+                            const err = await putRes.json();
+                            console.error(err);
+                            alert('GitHubへの保存に失敗しました: ' + err.message);
+                            msg.textContent = '保存失敗';
+                            msg.className = 'text-xs text-center mt-3 text-red-500 font-bold h-4';
+                            }
+                            } catch (e) {
+                            console.error(e);
+                            alert('通信エラーが発生しました');
+                            msg.textContent = '通信エラー';
+                            msg.className = 'text-xs text-center mt-3 text-red-500 font-bold h-4';
+                            }
+                            }
+
+                            // Initialize
+                            init();
+                            </script>
 </body>
 
 </html>
