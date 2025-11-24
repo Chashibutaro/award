@@ -15,16 +15,16 @@
       "screenshot": true
     }
   },
-  "date": "11/24",
+  "date": "11/25",
   "morning": {
     "processing": {
-      "name": "",
-      "value": "",
+      "name": "テスト",
+      "value": "50",
       "comment": ""
     },
     "orders": {
-      "name": "",
-      "value": "",
+      "name": "テスト",
+      "value": "16166",
       "comment": ""
     },
     "sales": {
@@ -70,5 +70,6 @@
       "name": ""
     }
   },
-  "history": []
+  "history": [],
+  "lastUpdated": "2025-11-24T03:26:11.328Z"
 }
