@@ -5,71 +5,64 @@
       "orders": "GM数 1位",
       "sales": "売上 1位"
     },
-    "theme": "default",
-    "visuals": {
-      "countUp": true,
-      "autoMode": true,
-      "confetti": true,
-      "liveBackground": true,
-      "comments": true,
-      "screenshot": true
-    }
+    "theme": "default"
   },
-  "date": "11/25",
+  "date": "11/23",
   "morning": {
     "processing": {
-      "name": "テスト",
-      "value": "50",
-      "comment": ""
+      "name": "",
+      "value": ""
     },
     "orders": {
       "name": "",
-      "value": "16166",
-      "comment": ""
+      "value": ""
     },
     "sales": {
       "name": "",
-      "value": "",
-      "comment": ""
+      "value": ""
     }
   },
   "afternoon": {
-    "orders": {
-      "name": "",
-      "value": "",
-      "comment": ""
-    },
     "processing": {
       "name": "",
-      "value": "",
-      "comment": ""
-    },
-    "sales": {
-      "name": "",
-      "value": "",
-      "comment": ""
+      "value": ""
     }
   },
   "fullday": {},
-  "current": {
-    "processing": {
-      "name": "砂糖",
-      "value": "14"
-    },
-    "orders": {
-      "name": "-",
-      "value": "-"
-    },
-    "sales": {
-      "value": "-",
-      "name": "-"
+  "current": {},
+  "today_summary": {},
+  "history": [
+    {
+      "date": "11/23",
+      "config": {
+        "labels": {
+          "processing": "処理数 1位",
+          "orders": "受注数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "テスト",
+          "value": "テスト"
+        },
+        "orders": {
+          "name": "テスト",
+          "value": "テスト"
+        },
+        "sales": {
+          "name": "テスト",
+          "value": "テスト"
+        }
+      },
+      "afternoon": {
+        "processing": {
+          "name": "テスト",
+          "value": "テスト"
+        }
+      },
+      "fullday": {}
     }
-  },
-  "today_summary": {
-    "processing": {
-      "name": ""
-    }
-  },
-  "history": [],
-  "lastUpdated": "2025-11-24T03:32:47.569Z"
+  ]
 }
