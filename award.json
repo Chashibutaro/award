@@ -31,5 +31,38 @@
   "fullday": {},
   "current": {},
   "today_summary": {},
-  "history": []
+  "history": [
+    {
+      "date": "11/25",
+      "config": {
+        "labels": {
+          "processing": "処理数 1位",
+          "orders": "GM数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "山内さん",
+          "value": "20件"
+        },
+        "orders": {
+          "name": "佐藤さん",
+          "value": "2件"
+        },
+        "sales": {
+          "name": "三浦さん",
+          "value": "$3,841"
+        }
+      },
+      "afternoon": {
+        "processing": {
+          "name": "",
+          "value": ""
+        }
+      },
+      "fullday": {}
+    }
+  ]
 }
