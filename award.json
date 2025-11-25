@@ -31,38 +31,5 @@
   "fullday": {},
   "current": {},
   "today_summary": {},
-  "history": [
-    {
-      "date": "11/23",
-      "config": {
-        "labels": {
-          "processing": "処理数 1位",
-          "orders": "受注数 1位",
-          "sales": "売上 1位"
-        },
-        "theme": "default"
-      },
-      "morning": {
-        "processing": {
-          "name": "テスト",
-          "value": "テスト"
-        },
-        "orders": {
-          "name": "テスト",
-          "value": "テスト"
-        },
-        "sales": {
-          "name": "テスト",
-          "value": "テスト"
-        }
-      },
-      "afternoon": {
-        "processing": {
-          "name": "テスト",
-          "value": "テスト"
-        }
-      },
-      "fullday": {}
-    }
-  ]
+  "history": []
 }
