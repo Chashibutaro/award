@@ -10,8 +10,8 @@
   "date": "11/25",
   "morning": {
     "processing": {
-      "name": "",
-      "value": ""
+      "name": "テスト",
+      "value": "10"
     },
     "orders": {
       "name": "",
