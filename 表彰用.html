@@ -289,6 +289,50 @@
       });
     }
 
+    function animateValue(el, rawValue) {
+      const text = (rawValue ?? '').toString().trim();
+      if (!text || text === '-') {
+        el.textContent = '-';
+        return;
+      }
+
+      const match = text.match(/^([^0-9+\-]*)([-+]?\d[\d,]*(?:\.\d+)?)(.*)$/);
+      if (!match) {
+        el.textContent = text;
+        return;
+      }
+
+      const [, prefix, numberPart, suffix] = match;
+      const decimals = (numberPart.split('.')[1] || '').length;
+      const target = parseFloat(numberPart.replace(/,/g, ''));
+
+      if (!isFinite(target)) {
+        el.textContent = text;
+        return;
+      }
+
+      const duration = 1000;
+      const start = performance.now();
+
+      const formatter = (val) => val.toLocaleString('ja-JP', {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      });
+
+      function step(now) {
+        const progress = Math.min((now - start) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        const current = target * eased;
+
+        el.textContent = `${prefix}${formatter(current)}${suffix}`;
+        if (progress < 1) requestAnimationFrame(step);
+        else el.textContent = `${prefix}${formatter(target)}${suffix}`;
+      }
+
+      el.textContent = `${prefix}${formatter(0)}${suffix}`;
+      requestAnimationFrame(step);
+    }
+
     function switchTab(tab) {
       const morningSec = document.getElementById('section-morning');
       const afternoonSec = document.getElementById('section-afternoon');
@@ -460,7 +504,8 @@
           const template = document.getElementById('card-template').content.cloneNode(true);
           template.querySelector('.label-field').textContent = label;
           template.querySelector('.name-field').textContent = item.name || '-';
-          template.querySelector('.value-field').textContent = item.value || '-';
+          const valueField = template.querySelector('.value-field');
+          animateValue(valueField, item.value || '-');
 
           container.appendChild(template);
         });
