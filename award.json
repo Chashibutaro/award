@@ -10,16 +10,16 @@
   "date": "11/26",
   "morning": {
     "processing": {
-      "name": "",
-      "value": ""
+      "name": "佐藤さん",
+      "value": "26件"
     },
     "orders": {
-      "name": "",
-      "value": ""
+      "name": "生駒さん",
+      "value": "4件"
     },
     "sales": {
-      "name": "",
-      "value": ""
+      "name": "木村さん",
+      "value": "$11,492"
     }
   },
   "afternoon": {
