@@ -466,10 +466,19 @@
     }
 
     async function loadData(force = false) {
+      let lastUpdatedText = null;
       let data = null;
       try {
         const res = await fetch('award.json?t=' + new Date().getTime());
-        if (res.ok) data = await res.json();
+        if (res.ok) {
+          const lastMod = res.headers.get('last-modified');
+          if (lastMod) {
+            lastUpdatedText = new Date(lastMod).toLocaleString('ja-JP', {
+              hour12: false
+            });
+          }
+          data = await res.json();
+        }
       } catch (e) { }
 
       if (!data) {
@@ -481,13 +490,14 @@
         fullData = data;
         if (data.config) config = data.config;
         if (config.theme) setTheme(config.theme);
-        render(data);
+        render(data, lastUpdatedText);
       }
     }
 
-    function render(data) {
+    function render(data, updatedText = null) {
       document.getElementById('display-date').textContent = data.date || '--/--';
-      document.getElementById('last-updated').textContent = new Date().toLocaleTimeString('ja-JP', { hour: '2-digit', minute: '2-digit' });
+      const dataTime = data.last_updated || data.updated_at || data.lastUpdated;
+      document.getElementById('last-updated').textContent = updatedText || dataTime || '--:--';
 
       ['morning', 'afternoon'].forEach(sec => {
         const container = document.getElementById(`container-${sec}`);
