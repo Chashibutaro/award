@@ -276,6 +276,19 @@
       theme: 'default'
     };
     let fullData = null;
+    let hasAutoSelectedTab = false;
+
+    function getDefaultTabByTime() {
+      const hour = new Date().getHours();
+      // Afternoon tab from 18:00 through 11:59 of the next day
+      return (hour >= 18 || hour < 12) ? 'afternoon' : 'morning';
+    }
+
+    function applyDefaultTabOnce(force = false) {
+      if (hasAutoSelectedTab && !force) return;
+      switchTab(getDefaultTabByTime());
+      hasAutoSelectedTab = true;
+    }
 
     function setTheme(themeName) {
       document.documentElement.setAttribute('data-theme', themeName);
@@ -461,8 +474,7 @@
     function loadRecord(record) {
       if (record.config) config = record.config;
       render(record);
-      // Reset tab to morning
-      switchTab('morning');
+      applyDefaultTabOnce(true);
     }
 
     async function loadData(force = false) {
@@ -491,6 +503,7 @@
         if (data.config) config = data.config;
         if (config.theme) setTheme(config.theme);
         render(data, lastUpdatedText);
+        applyDefaultTabOnce();
       }
     }
 
