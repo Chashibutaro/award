@@ -7,18 +7,18 @@
     },
     "theme": "default"
   },
-  "date": "12/15",
+  "date": "12/16",
   "morning": {
     "processing": {
-      "name": "秋田さん",
-      "value": "16件"
+      "name": "秋田さん、佐藤さん",
+      "value": "6件"
     },
     "orders": {
-      "name": "🍐",
-      "value": "😢"
+      "name": "生駒さん",
+      "value": "1件"
     },
     "sales": {
-      "name": "秋田さん",
+      "name": "生駒さん、佐藤さん",
       "value": "$168"
     }
   },
