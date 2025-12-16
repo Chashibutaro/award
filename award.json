@@ -24,16 +24,16 @@
   },
   "afternoon": {
     "processing": {
-      "name": "",
-      "value": ""
+      "name": "佐藤さん",
+      "value": "22件"
     },
     "sales": {
-      "name": "",
-      "value": ""
+      "name": "秋田さん",
+      "value": "$2,204"
     },
     "orders": {
-      "value": "",
-      "name": ""
+      "value": "2件",
+      "name": "佐藤さん"
     }
   },
   "fullday": {},
@@ -66,16 +66,16 @@
       },
       "afternoon": {
         "processing": {
-          "name": "",
-          "value": ""
+          "name": "佐藤さん",
+          "value": "22件"
         },
         "sales": {
-          "name": "",
-          "value": ""
+          "name": "秋田さん",
+          "value": "$2,204"
         },
         "orders": {
-          "value": "",
-          "name": ""
+          "value": "2件",
+          "name": "佐藤さん"
         }
       },
       "fullday": {}
