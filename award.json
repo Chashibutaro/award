@@ -24,22 +24,62 @@
   },
   "afternoon": {
     "processing": {
-      "name": "",
-      "value": ""
+      "name": "山内さん",
+      "value": "12件"
     },
     "sales": {
-      "name": "",
-      "value": ""
+      "name": "山内さん",
+      "value": "$978"
     },
     "orders": {
-      "value": "",
-      "name": ""
+      "value": "3件",
+      "name": "三浦さん"
     }
   },
   "fullday": {},
   "current": {},
   "today_summary": {},
   "history": [
+    {
+      "date": "12/16",
+      "config": {
+        "labels": {
+          "processing": "処理数 1位",
+          "orders": "GM数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "秋田さん、佐藤さん",
+          "value": "6件"
+        },
+        "orders": {
+          "name": "生駒さん、佐藤さん",
+          "value": "1件"
+        },
+        "sales": {
+          "name": "生駒さん、佐藤さん",
+          "value": "$168"
+        }
+      },
+      "afternoon": {
+        "processing": {
+          "name": "山内さん",
+          "value": "12件"
+        },
+        "sales": {
+          "name": "山内さん",
+          "value": "$978"
+        },
+        "orders": {
+          "value": "3件",
+          "name": "三浦さん"
+        }
+      },
+      "fullday": {}
+    },
     {
       "date": "12/15",
       "config": {
