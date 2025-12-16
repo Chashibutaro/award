@@ -24,16 +24,16 @@
   },
   "afternoon": {
     "processing": {
-      "name": "佐藤さん",
-      "value": "22件"
+      "name": "",
+      "value": ""
     },
     "sales": {
-      "name": "秋田さん",
-      "value": "$2,204"
+      "name": "",
+      "value": ""
     },
     "orders": {
-      "value": "2件",
-      "name": "佐藤さん"
+      "value": "",
+      "name": ""
     }
   },
   "fullday": {},
