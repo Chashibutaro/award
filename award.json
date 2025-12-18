@@ -7,33 +7,33 @@
     },
     "theme": "default"
   },
-  "date": "12/17",
+  "date": "12/18",
   "morning": {
     "processing": {
-      "name": "三浦さん",
-      "value": "4件"
+      "name": "佐藤さん",
+      "value": "9件"
     },
     "orders": {
-      "name": "三浦さん、生駒さん",
+      "name": "佐藤さん　三浦さん",
       "value": "1件"
     },
     "sales": {
-      "name": "生駒さん、布施さん、秋田さん",
+      "name": "山内さん",
       "value": "$846"
     }
   },
   "afternoon": {
     "processing": {
-      "name": "佐藤さん",
-      "value": "18件"
+      "name": "",
+      "value": ""
     },
     "sales": {
-      "name": "西郷さん",
-      "value": "＄4,368"
+      "name": "",
+      "value": ""
     },
     "orders": {
-      "value": "3件",
-      "name": "三浦さん"
+      "value": "",
+      "name": ""
     }
   },
   "fullday": {},
