@@ -279,9 +279,11 @@
     let hasAutoSelectedTab = false;
 
     function getDefaultTabByTime() {
-      const hour = new Date().getHours();
-      // Afternoon tab from 18:00 through 11:59 of the next day
-      return (hour >= 18 || hour < 12) ? 'afternoon' : 'morning';
+      // 日本時間 (JST: UTC+9) を使用してタブを切り替え
+      const now = new Date();
+      const jstHour = new Date(now.getTime() + (9 * 60 * 60 * 1000)).getUTCHours();
+      // 午後の部: 18:00 〜 翌11:59、午前の部: 12:00 〜 17:59
+      return (jstHour >= 18 || jstHour < 12) ? 'afternoon' : 'morning';
     }
 
     function applyDefaultTabOnce(force = false) {
