@@ -1,39 +1,39 @@
 {
   "config": {
     "labels": {
-      "processing": "処理数 1位",
+      "processing": "デモ打診数 1位",
       "orders": "GM数 1位",
       "sales": "売上 1位"
     },
     "theme": "default"
   },
-  "date": "12/18",
+  "date": "12/19",
   "morning": {
     "processing": {
-      "name": "佐藤さん",
-      "value": "9件"
+      "name": "木村さん",
+      "value": "1件"
     },
     "orders": {
-      "name": "佐藤さん　三浦さん",
+      "name": "木村さん",
       "value": "1件"
     },
     "sales": {
-      "name": "山内さん",
-      "value": "$846"
+      "name": "三浦さん",
+      "value": "$3,750"
     }
   },
   "afternoon": {
     "processing": {
-      "name": "山内さん",
-      "value": "16件"
+      "name": "",
+      "value": ""
     },
     "sales": {
-      "name": "布施さん",
-      "value": "$1793"
+      "name": "",
+      "value": ""
     },
     "orders": {
-      "value": "4件",
-      "name": "木村さん"
+      "value": "",
+      "name": ""
     }
   },
   "fullday": {},
