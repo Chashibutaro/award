@@ -28,18 +28,58 @@
       "value": ""
     },
     "sales": {
-      "name": "",
-      "value": ""
+      "name": "西郷さん",
+      "value": "$13,147"
     },
     "orders": {
-      "value": "",
-      "name": ""
+      "value": "2件",
+      "name": "佐藤さん"
     }
   },
   "fullday": {},
   "current": {},
   "today_summary": {},
   "history": [
+    {
+      "date": "12/25",
+      "config": {
+        "labels": {
+          "processing": "デモ打診数 1位",
+          "orders": "GM数 1位",
+          "sales": "売上 1位"
+        },
+        "theme": "default"
+      },
+      "morning": {
+        "processing": {
+          "name": "🍐",
+          "value": "🍐"
+        },
+        "orders": {
+          "name": "秋田さん",
+          "value": "1件"
+        },
+        "sales": {
+          "name": "三浦さん",
+          "value": "$846"
+        }
+      },
+      "afternoon": {
+        "processing": {
+          "name": "",
+          "value": ""
+        },
+        "sales": {
+          "name": "西郷さん",
+          "value": "$13,147"
+        },
+        "orders": {
+          "value": "2件",
+          "name": "佐藤さん"
+        }
+      },
+      "fullday": {}
+    },
     {
       "date": "12/24",
       "config": {
